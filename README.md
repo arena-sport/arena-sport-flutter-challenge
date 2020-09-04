@@ -7,7 +7,7 @@ Earn your chance to become a permanent member or external collaborator of Arena 
 Some screens that will help you.
 | Main page | Stats page |
 | -- | -- |
-|![Main page](https://user-images.githubusercontent.com/17878459/92183024-90dead80-ee23-11ea-9429-1b25e2a73485.jpeg)|![Stats page](https://user-images.githubusercontent.com/61524860/92216865-441fc480-ee6d-11ea-821c-daa63350bbed.png)|
+|![Main page](https://user-images.githubusercontent.com/17878459/92183024-90dead80-ee23-11ea-9429-1b25e2a73485.jpeg)|![Stats page](https://user-images.githubusercontent.com/61524860/92217221-cad4a180-ee6d-11ea-9d0a-6d63dbc51188.png)|
 
 ## Requirements
 All of the following requirements must to be fully functional.
