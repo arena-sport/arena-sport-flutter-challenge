@@ -7,13 +7,13 @@ Earn your chance to become a permanent member or external collaborator of Arena 
 Some screens that will help you.
 | Main page | Stats page |
 | -- | -- |
-|![Main page](https://user-images.githubusercontent.com/17878459/92183024-90dead80-ee23-11ea-9429-1b25e2a73485.jpeg)|![Stats page](https://user-images.githubusercontent.com/17878459/92185921-83c5bc80-ee2b-11ea-8763-4adf3595bb9f.jpeg)|
+|![Main page](https://user-images.githubusercontent.com/17878459/92183024-90dead80-ee23-11ea-9429-1b25e2a73485.jpeg)|![Stats page](https://user-images.githubusercontent.com/17878459/92186149-38f87480-ee2c-11ea-86db-f3c8ef981d83.jpeg)|
 
 ## Requirements
 All of the following requirements must to be fully functional.
 
-- Sign in page (Email, Google, Facebook, etc.)
-- Home page consuming the endpoint (like the screenshot above)
+- Home page, consuming the endpoint.
+- Stats page, consuming the endpoint.
 - And make some magic ✨
 
 ## Submitting
