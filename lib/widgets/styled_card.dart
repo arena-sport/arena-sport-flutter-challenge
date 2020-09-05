@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 
 class StyledCard extends StatelessWidget {
   final Widget child;
+  final String title;
 
   const StyledCard({
     this.child,
+    this.title,
     Key key,
   }) : super(key: key);
 
-  Widget _getHeader({String title}) {
+  Widget _getHeader() {
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              title,
+              title.toUpperCase(),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -48,7 +50,7 @@ class StyledCard extends StatelessWidget {
         padding: EdgeInsets.all(8),
         child: Column(
           children: [
-            _getHeader(title: 'PARTIDOS'),
+            _getHeader(),
           ],
         ),
       ),

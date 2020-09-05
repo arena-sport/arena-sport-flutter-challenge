@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Partido extends StatelessWidget {
-  final bool displayNotification = false;
+  final bool shouldDisplayNotification;
+
+  const Partido({this.shouldDisplayNotification});
 
   Icon get teamIcon {
     return Icon(Icons.tablet_mac);
@@ -22,6 +24,7 @@ class Partido extends StatelessWidget {
     return Icon(
       Icons.notifications_none,
       size: 24,
+      color: Colors.grey,
     );
   }
 
@@ -39,7 +42,7 @@ class Partido extends StatelessWidget {
             SizedBox(width: 8),
             Text('Direct TV'),
             Expanded(child: Container()),
-            ringer
+            shouldDisplayNotification ? ringer : SizedBox(width: ringer.size),
           ],
         ),
         SizedBox(height: 8),
