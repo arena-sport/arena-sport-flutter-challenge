@@ -13,7 +13,7 @@ void main() {
       home: Scaffold(
         backgroundColor: Colors.grey.shade200,
         appBar: StyledAppBar(),
-        body: HomeScreen(),
+        body: StatsScreen(),
         bottomNavigationBar: StyledBottomNavigationBar(),
       ),
     ),

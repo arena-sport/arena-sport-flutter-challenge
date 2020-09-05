@@ -14,8 +14,8 @@ class _StyledBottomNavigationBarState extends State<StyledBottomNavigationBar>
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      showSelectedLabels: true,
-      showUnselectedLabels: true,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
       selectedItemColor: Colors.blue,
       unselectedItemColor: Colors.grey.shade800,
       currentIndex: currentTab,
@@ -46,11 +46,12 @@ class _StyledBottomNavigationBarState extends State<StyledBottomNavigationBar>
       ),
     ),
     BottomNavigationBarItem(
-      icon: Icon(
-        Icons.local_activity,
+      icon: Image.asset(
+        'assets/images/arena_icon.png',
+        height: 35.0,
       ),
       title: Text(
-        'Stats',
+        'Arena',
       ),
     ),
     BottomNavigationBarItem(
