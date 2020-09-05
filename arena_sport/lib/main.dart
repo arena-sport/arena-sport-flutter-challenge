@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'home_page.dart';
+import 'models.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -34,6 +37,13 @@ class AppBase extends StatefulWidget {
 class AppBaseState extends State<AppBase> {
 
   int _currentIndex = 0;
+  final HomePageModel _homePageModel = HomePageModel();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +54,7 @@ class AppBaseState extends State<AppBase> {
       body: (int curr) {
         switch (curr) {
           case 0:
-            return null;
+            return HomePage(_homePageModel);
           case 1:
             return null;
           case 2:
