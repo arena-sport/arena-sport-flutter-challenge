@@ -1,28 +1,24 @@
-import 'package:arena/views/horizontal_list_views/information_list_view.dart';
+import 'package:arena/views/stats_screen/information_list_view.dart';
 import 'package:flutter/material.dart';
 
-import '../views/horizontal_list_views/information_list_view.dart';
-import '../views/comparison_view/comparison_view.dart';
-import '../views/previous_games_view.dart';
+import '../views/stats_screen/information_list_view.dart';
+import '../views/stats_screen/comparison_view.dart';
+import '../views/stats_screen/previous_games_view.dart';
+import 'package:arena/views/stats_screen/goal_averages.dart';
+import 'package:arena/views/stats_screen/scorers.dart';
 
 class StatsScreen extends StatelessWidget {
-  Widget get extraInfo {
+  Widget get _extraInfo {
     return Container(
       color: Colors.white,
       padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
       child: Column(
         children: [
           PreviousGamesView(),
-          Divider(
-            thickness: 2.0,
-          ),
-          Container(
-            height: 100,
-          ),
-          Divider(
-            thickness: 2.0,
-          ),
-          Container(height: 150),
+          Divider(thickness: 2.0),
+          GoalAverages(),
+          Divider(thickness: 2.0),
+          Scorers(),
         ],
       ),
     );
@@ -36,7 +32,8 @@ class StatsScreen extends StatelessWidget {
         children: [
           InformationListView(),
           ComparisonView(),
-          extraInfo,
+          _extraInfo,
+          SizedBox(height: 16),
         ],
       ),
     );

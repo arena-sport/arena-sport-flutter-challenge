@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:arena/widgets/styled_card.dart';
 import './partido.dart';
-import '../../widgets/styled_card.dart';
 
 class Partidos extends StatelessWidget {
   @override

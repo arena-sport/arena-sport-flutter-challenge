@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:arena/views/partidos_view/partidos.dart';
-import 'package:arena/views/horizontal_list_views/teams_list_view.dart';
-import 'package:arena/views/noticias_view/noticias.dart';
-
-import 'package:arena/widgets/styled_bottom_navigation_bar.dart';
-import 'package:arena/widgets/styled_app_bar.dart';
+import 'package:arena/views/home_screen/noticias_view/noticias.dart';
+import 'package:arena/views/home_screen/partidos_view/partidos.dart';
+import 'package:arena/views/home_screen/teams_list_view.dart';
 
 class HomeScreen extends StatelessWidget {
   @override

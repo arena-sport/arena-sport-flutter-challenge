@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'circle_button.dart';
+import '../circle_button.dart';
 
 class StyledAppBar extends StatelessWidget implements PreferredSizeWidget {
   StyledAppBar({Key key}) : super(key: key);

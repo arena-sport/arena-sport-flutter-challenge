@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../widgets/styled_card.dart';
+import 'package:arena/widgets/styled_card.dart';
 import './noticia.dart';
 
 class Noticias extends StatelessWidget {
