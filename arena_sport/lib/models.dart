@@ -1,8 +1,4 @@
-import 'dart:convert';
-
 import 'package:scoped_model/scoped_model.dart';
-
-import 'package:http/http.dart' as http;
 
 class CounterModel extends Model {
 
@@ -23,38 +19,27 @@ class CounterModel extends Model {
 
 class UserInfoModel extends Model {
 
-  String _country = '';
+  Country _country;
+  List<League> _leagues;
 
-  String get country => _country;
+  Country get country => _country;
 
-  void setCountry(Country country) {
-    _country = country.country;
+  List<League> get leagues => _leagues;
+
+  void setUserCountry(Country country) {
+    _country = country;
 
     notifyListeners();
   }
 
-  Future<List<Country>> getCountriesList() async {
-    
-    var response = await http.get(
-      // api url to get list of countries supported by api
-      "https://api-football-v1.p.rapidapi.com/v2/countries",
-      headers: {
-        // TODO Get API key and fill here
-        'X-RapidAPI-Key': 'XXXXXXXXXXXXXXXXXXXXXXXXX',
-      },
-    );
+  void setUserLeagues(List<League> leagues) {
+    _leagues = leagues;
 
-    if (response.statusCode == 200) {
-      // If returns 200 OK response
-      // Then return the list of countries
-      return CountryResponse.fromJson(json.decode(response.body)).countries;
-    } else {
-      // Not OK
-      throw Exception('Failed to load album');
-    }
+    notifyListeners();
   }
 }
 
+// used to retrieve data from country api
 class CountryResponse {
 
   final int results;
