@@ -38,7 +38,7 @@ class _TeamViewWidget extends StatelessWidget {
         return ListView(
           children: [],
           scrollDirection: Axis.horizontal,
-        );;
+        );
       },
     );
   }

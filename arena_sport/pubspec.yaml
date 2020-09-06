@@ -30,6 +30,8 @@ dependencies:
   cupertino_icons: ^0.1.3
   # The following is for state management.
   scoped_model: ^1.0.1
+  # The following is for making http requests
+  http: ^0.12.2
 
 dev_dependencies:
   flutter_test:
