@@ -3,6 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import 'home_page.dart';
 import 'models.dart';
+import 'api.dart' as api;
 
 void main() {
   runApp(MyApp());
@@ -36,11 +37,39 @@ class AppBase extends StatefulWidget {
 }
 
 class AppBaseState extends State<AppBase> {
-
   int _currentIndex = 0;
   // models
-  final UserInfoModel _userInfo = UserInfoModel(); // TODO get saved user info from memory
-  final HomePageModel _homePageModel = HomePageModel(); // TODO also retrieve from memory
+  final UserInfoModel _userInfo =
+      UserInfoModel(); // TODO get saved user info from memory
+  final HomePageModel _homePageModel =
+      HomePageModel(); // TODO also retrieve from memory
+
+  void chooseCountryAndLeagues(BuildContext context) {
+    var countries = api.getCountriesList();
+
+    showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      builder: (BuildContext context) {
+        return FutureBuilder<List<Country>>(
+          future: countries,
+          builder: (BuildContext context, AsyncSnapshot<List<Country>> snapshot) {
+            if (snapshot.hasData) {
+              // TODO Display list of countries to choose from
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('ERROR'),
+              );
+            } else {
+              // TODO Show progress indicator
+            }
+
+            return null;
+          },
+        );
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -50,6 +79,10 @@ class AppBaseState extends State<AppBase> {
 
   @override
   Widget build(BuildContext context) {
+    if (_userInfo.country == null || _userInfo.leagues == null) {
+      chooseCountryAndLeagues(context);
+    }
+
     return ScopedModel(
       model: _userInfo,
       child: Scaffold(
@@ -73,29 +106,58 @@ class AppBaseState extends State<AppBase> {
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-                icon: const Icon(Icons.home_outlined, color: Colors.white70,),
+                icon: const Icon(
+                  Icons.home_outlined,
+                  color: Colors.white70,
+                ),
                 // label: '',
-                activeIcon: const Icon(Icons.home_outlined, color: Colors.black,)
+                activeIcon: const Icon(
+                  Icons.home_outlined,
+                  color: Colors.black,
+                )),
+            BottomNavigationBarItem(
+              icon: const Icon(
+                Icons.bar_chart,
+                color: Colors.white70,
+              ),
+              // label: '',
+              activeIcon: const Icon(
+                Icons.bar_chart,
+                color: Colors.black,
+              ),
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.bar_chart, color: Colors.white70,),
+              icon: const Icon(
+                Icons.ac_unit,
+                color: Colors.white70,
+              ),
               // label: '',
-              activeIcon: const Icon(Icons.bar_chart, color: Colors.black,),
+              activeIcon: const Icon(
+                Icons.ac_unit,
+                color: Colors.black,
+              ),
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.ac_unit, color: Colors.white70,),
+              icon: const Icon(
+                Icons.live_tv,
+                color: Colors.black,
+              ), // can be changed for Icons.tv
               // label: '',
-              activeIcon: const Icon(Icons.ac_unit, color: Colors.black,),
+              activeIcon: const Icon(
+                Icons.live_tv,
+                color: Colors.white70,
+              ),
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.live_tv, color: Colors.black,), // can be changed for Icons.tv
+              icon: const Icon(
+                Icons.language,
+                color: Colors.black,
+              ),
               // label: '',
-              activeIcon: const Icon(Icons.live_tv, color: Colors.white70,),
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.language, color: Colors.black,),
-              // label: '',
-              activeIcon: const Icon(Icons.language, color: Colors.white70,),
+              activeIcon: const Icon(
+                Icons.language,
+                color: Colors.white70,
+              ),
             )
           ],
           type: BottomNavigationBarType.shifting,
