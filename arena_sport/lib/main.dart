@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import 'home_page.dart';
 import 'models.dart';
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'ARENA',
       theme: ThemeData(
         primarySwatch: Colors.white,
         // This makes the visual density adapt to the platform that you run
@@ -37,69 +38,74 @@ class AppBase extends StatefulWidget {
 class AppBaseState extends State<AppBase> {
 
   int _currentIndex = 0;
-  final HomePageModel _homePageModel = HomePageModel();
+  // models
+  final UserInfoModel _userInfo = UserInfoModel(); // TODO get saved user info from memory
+  final HomePageModel _homePageModel = HomePageModel(); // TODO also retrieve from memory
 
   @override
   void initState() {
-    // TODO: implement initState
+    // TODO: implement initState; change to different screen is user has not yet chosen their country and leagues in UserInfo
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: (int curr) {
-        switch (curr) {
-          case 0:
-            return HomePage(_homePageModel);
-          case 1:
-            return null;
-          case 2:
-            return null;
-          case 3:
-            return null;
-          case 4:
-            return null;
-        }
-      }(_currentIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.home_outlined, color: Colors.white70,),
-            // label: '',
-            activeIcon: const Icon(Icons.home_outlined, color: Colors.black,)
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.bar_chart, color: Colors.white70,),
-            // label: '',
-            activeIcon: const Icon(Icons.bar_chart, color: Colors.black,),
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.ac_unit, color: Colors.white70,),
-            // label: '',
-            activeIcon: const Icon(Icons.ac_unit, color: Colors.black,),
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.live_tv, color: Colors.black,), // can be changed for Icons.tv
-            // label: '',
-            activeIcon: const Icon(Icons.live_tv, color: Colors.white70,),
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.language, color: Colors.black,),
-            // label: '',
-            activeIcon: const Icon(Icons.language, color: Colors.white70,),
-          )
-        ],
-        type: BottomNavigationBarType.shifting,
-        currentIndex: _currentIndex,
-        onTap: (int t) {
-          setState(() {
-            _currentIndex = t;
-          });
-        },
+    return ScopedModel(
+      model: _userInfo,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: (int curr) {
+          switch (curr) {
+            case 0:
+              return HomePage(_homePageModel);
+            case 1:
+              return null;
+            case 2:
+              return null;
+            case 3:
+              return null;
+            case 4:
+              return null;
+          }
+        }(_currentIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: const Icon(Icons.home_outlined, color: Colors.white70,),
+                // label: '',
+                activeIcon: const Icon(Icons.home_outlined, color: Colors.black,)
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.bar_chart, color: Colors.white70,),
+              // label: '',
+              activeIcon: const Icon(Icons.bar_chart, color: Colors.black,),
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.ac_unit, color: Colors.white70,),
+              // label: '',
+              activeIcon: const Icon(Icons.ac_unit, color: Colors.black,),
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.live_tv, color: Colors.black,), // can be changed for Icons.tv
+              // label: '',
+              activeIcon: const Icon(Icons.live_tv, color: Colors.white70,),
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.language, color: Colors.black,),
+              // label: '',
+              activeIcon: const Icon(Icons.language, color: Colors.white70,),
+            )
+          ],
+          type: BottomNavigationBarType.shifting,
+          currentIndex: _currentIndex,
+          onTap: (int t) {
+            setState(() {
+              _currentIndex = t;
+            });
+          },
+        ),
       ),
     );
   }

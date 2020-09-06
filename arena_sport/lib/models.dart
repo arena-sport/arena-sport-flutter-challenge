@@ -1,7 +1,6 @@
 import 'package:scoped_model/scoped_model.dart';
 
 class CounterModel extends Model {
-
   int _counter = 0;
 
   int get counter => _counter;
@@ -18,7 +17,6 @@ class CounterModel extends Model {
 ////////////////////////////////////////////////////
 
 class UserInfoModel extends Model {
-
   Country _country;
   List<League> _leagues;
 
@@ -41,14 +39,12 @@ class UserInfoModel extends Model {
 
 // used to retrieve data from country api
 class CountryResponse {
-
   final int results;
   final List<Country> countries;
 
   CountryResponse({this.results, this.countries});
 
   factory CountryResponse.fromJson(Map<String, dynamic> json) {
-
     var data = json['api'];
     var list = data['countries'] as List;
 
@@ -83,7 +79,6 @@ class LeagueResponse {
   LeagueResponse({this.resultCount, this.leagues});
 
   factory LeagueResponse.fromJson(Map<String, dynamic> json) {
-
     var data = json['api'];
     var list = json['leagues'] as List;
 
@@ -153,12 +148,13 @@ class Coverage {
   final bool odds;
 
   Coverage({
-  this.standings,
-  this.fixtures,
-  this.players,
-  this.topScorers,
-  this.predictions,
-  this.odds,});
+    this.standings,
+    this.fixtures,
+    this.players,
+    this.topScorers,
+    this.predictions,
+    this.odds,
+  });
 
   factory Coverage.fromJson(Map<String, dynamic> json) {
     return Coverage(
@@ -194,6 +190,4 @@ class Fixtures {
 // Home Page Model
 ////////////////////////////////////////////////////
 
-class HomePageModel extends Model {
-
-}
+class HomePageModel extends Model {}

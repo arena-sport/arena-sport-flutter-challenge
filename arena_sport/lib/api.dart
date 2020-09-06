@@ -10,7 +10,6 @@ import 'models.dart';
 ////////////////////////////////////////////////////
 
 Future<List<Country>> getCountriesList() async {
-
   var response = await http.get(
     // api url to get list of countries supported by api
     "https://api-football-v1.p.rapidapi.com/v2/countries",
@@ -31,7 +30,6 @@ Future<List<Country>> getCountriesList() async {
 }
 
 Future<List<League>> getLeaguesInCountry(Country country) async {
-
   await http.get(
     'https://api-football-v1.p.rapidapi.com/v2/leagues/country/${country.code}',
     headers: {
