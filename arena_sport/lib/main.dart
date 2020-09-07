@@ -260,3 +260,5 @@ class _SearchButton extends StatelessWidget {
     );
   }
 }
+
+// export PATH="$PATH:/Users/projects/flutter/bin"

@@ -196,6 +196,67 @@ class Fixtures {
   }
 }
 
+class TeamListResponse {
+  final int resultCount;
+  final List<Team> teams;
+
+  TeamListResponse({this.resultCount, this.teams});
+
+  factory TeamListResponse.fromJson(Map<String, dynamic> json) {
+    var data = json['api'];
+    var list = json['teams'] as List;
+
+
+  }
+}
+
+class Team {
+  final int teamID;
+  final String name;
+  final String code;
+  final String logoURL;
+  final bool isNational;
+  final String country;
+  final int founded;
+  final String venueName;
+  final String venueSurface;
+  final String venueAddress;
+  final String venueCity;
+  final int venueCapacity;
+
+  Team({
+    this.teamID,
+    this.name,
+    this.code,
+    this.logoURL,
+    this.isNational,
+    this.country,
+    this.founded,
+    this.venueName,
+    this.venueSurface,
+    this.venueAddress,
+    this.venueCity,
+    this.venueCapacity,
+  });
+
+  factory Team.fromJson(Map<String, dynamic> json) {
+    return Team(
+      teamID: json['team_id'] as int,
+      name: json['name'] as String,
+      code: json['code'] as String,
+      logoURL: json['logo'] as String,
+      isNational: json['is_national'] as bool,
+      country: json['country'] as String,
+      founded: json['founded'] as int,
+      venueName: json['venue_name'] as String,
+      venueSurface: json['venue_surface'] as String,
+      venueAddress: json['venue_address'] as String,
+      venueCity: json['venue_city'] as String,
+      venueCapacity: json['venue_capacity'] as int,
+    );
+  }
+}
+
 ////////////////////////////////////////////////////
 // Home Page Model
 ////////////////////////////////////////////////////
