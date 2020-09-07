@@ -14,7 +14,7 @@ void main() {
       home: Scaffold(
         backgroundColor: Colors.grey.shade200,
         appBar: StyledAppBar(),
-        body: StatsScreen(),
+        body: HomeScreen(),
         bottomNavigationBar: StyledBottomNavigationBar(),
       ),
     ),

@@ -42,3 +42,6 @@ app.*.map.json
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Server dependencies (should be installed by running npm install within the server folder)
+server/node_modules/
