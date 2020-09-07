@@ -1,3 +1,4 @@
+import 'package:arena_sport/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -120,6 +121,7 @@ class AppBaseState extends State<AppBase> {
           title: Text(widget.title),
           actions: [
             _LiveSwitch(),
+            _SearchButton(),
           ],
         ),
         body: (int curr) {
@@ -234,6 +236,23 @@ class _LiveSwitch extends StatelessWidget {
           },
         ),
       ],
+    );
+  }
+}
+
+class _SearchButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      elevation: 2.0,
+      fillColor: Colors.white,
+      child: Icon(Icons.search, size: 35.0),
+      padding: EdgeInsets.all(15.0),
+      shape: CircleBorder(),
+      onPressed: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SearchPage()),
+      ),
     );
   }
 }
