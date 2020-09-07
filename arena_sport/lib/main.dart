@@ -211,7 +211,7 @@ class AppBaseState extends State<AppBase> {
 class _LiveSwitch extends StatelessWidget {
   final Key key;
 
-  _LiveSwitch({this.key});
+  _LiveSwitch({this.key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -241,6 +241,10 @@ class _LiveSwitch extends StatelessWidget {
 }
 
 class _SearchButton extends StatelessWidget {
+  final Key key;
+
+  _SearchButton({this.key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return RawMaterialButton(
