@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
 import 'models.dart';
@@ -30,7 +31,7 @@ Future<List<Country>> getCountriesList() async {
 }
 
 Future<List<League>> getLeaguesInCountry(Country country) async {
-  await http.get(
+  return await http.get(
     'https://api-football-v1.p.rapidapi.com/v2/leagues/country/${country.code}',
     headers: {
       // TODO Get API key and fill here
@@ -44,3 +45,22 @@ Future<List<League>> getLeaguesInCountry(Country country) async {
     }
   }).catchError(print);
 }
+
+Image getCountryImage(Country country) => _getImageFromURL(
+      country.flagUrl,
+      width: 16,
+      height: 16,
+      headers: {
+        // TODO Get API key and fill here
+        'X-RapidAPI-Key': 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+      },
+    );
+
+Image _getImageFromURL(String url,
+        {int width, int height, Map<String, String> headers}) =>
+    Image.network(
+      url,
+      cacheWidth: width,
+      cacheHeight: height,
+      headers: headers.isEmpty ? null : headers,
+    );

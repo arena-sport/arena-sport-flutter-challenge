@@ -37,6 +37,8 @@ class UserInfoModel extends Model {
   }
 }
 
+typedef giveCountry = void Function(Country c);
+
 // used to retrieve data from country api
 class CountryResponse {
   final int results;

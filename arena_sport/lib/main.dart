@@ -44,7 +44,7 @@ class AppBaseState extends State<AppBase> {
   final HomePageModel _homePageModel =
       HomePageModel(); // TODO also retrieve from memory
 
-  void chooseCountryAndLeagues(BuildContext context) {
+  void _chooseCountry(BuildContext context, giveCountry c) {
     var countries = api.getCountriesList();
 
     showModalBottomSheet(
@@ -53,22 +53,51 @@ class AppBaseState extends State<AppBase> {
       builder: (BuildContext context) {
         return FutureBuilder<List<Country>>(
           future: countries,
-          builder: (BuildContext context, AsyncSnapshot<List<Country>> snapshot) {
+          builder:
+              (BuildContext context, AsyncSnapshot<List<Country>> snapshot) {
             if (snapshot.hasData) {
-              // TODO Display list of countries to choose from
+              // If data has come through successfully
+              // Return list of tile with countries to select from
+              return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    // Show flag logo
+                    leading: api.getCountryImage(
+                      snapshot.data[index],
+                    ),
+                    // Show Country name
+                    title: Text(snapshot.data[index].country),
+                    // if chosen, return country chosen and then remove the bottomsheet
+                    onTap: () {
+                      c(snapshot.data[index]);
+                      Navigator.pop(context);
+                    },
+                  );
+                },
+              );
             } else if (snapshot.hasError) {
               return Center(
                 child: Text('ERROR'),
               );
             } else {
-              // TODO Show progress indicator
+              // If still waiting for results, show progress indicator
+              return Center(
+                child: SizedBox(
+                  child: CircularProgressIndicator(),
+                  width: 60,
+                  height: 60,
+                ),
+              );
             }
-
-            return null;
           },
         );
       },
     );
+  }
+
+  void _choseCountry(Country country) {
+    _userInfo.setUserCountry(country);
   }
 
   @override
@@ -79,8 +108,8 @@ class AppBaseState extends State<AppBase> {
 
   @override
   Widget build(BuildContext context) {
-    if (_userInfo.country == null || _userInfo.leagues == null) {
-      chooseCountryAndLeagues(context);
+    if (_userInfo.country == null) {
+      _chooseCountry(context, _choseCountry);
     }
 
     return ScopedModel(
