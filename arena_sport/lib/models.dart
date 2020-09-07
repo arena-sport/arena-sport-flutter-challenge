@@ -19,10 +19,12 @@ class CounterModel extends Model {
 class UserInfoModel extends Model {
   Country _country;
   List<League> _leagues;
+  bool _isLive;
 
+  // Getters
   Country get country => _country;
-
   List<League> get leagues => _leagues;
+  bool get isLive => _isLive;
 
   void setUserCountry(Country country) {
     _country = country;
@@ -32,6 +34,12 @@ class UserInfoModel extends Model {
 
   void setUserLeagues(List<League> leagues) {
     _leagues = leagues;
+
+    notifyListeners();
+  }
+
+  void setIsLive(bool newIsLive) {
+    _isLive = newIsLive;
 
     notifyListeners();
   }

@@ -38,6 +38,8 @@ class AppBase extends StatefulWidget {
 
 class AppBaseState extends State<AppBase> {
   int _currentIndex = 0;
+  Future<List<Country>> _countries;
+
   // models
   final UserInfoModel _userInfo =
       UserInfoModel(); // TODO get saved user info from memory
@@ -45,14 +47,12 @@ class AppBaseState extends State<AppBase> {
       HomePageModel(); // TODO also retrieve from memory
 
   void _chooseCountry(BuildContext context, giveCountry c) {
-    var countries = api.getCountriesList();
-
     showModalBottomSheet(
       context: context,
       isDismissible: false,
       builder: (BuildContext context) {
         return FutureBuilder<List<Country>>(
-          future: countries,
+          future: _countries,
           builder:
               (BuildContext context, AsyncSnapshot<List<Country>> snapshot) {
             if (snapshot.hasData) {
@@ -102,7 +102,8 @@ class AppBaseState extends State<AppBase> {
 
   @override
   void initState() {
-    // TODO: implement initState; change to different screen is user has not yet chosen their country and leagues in UserInfo
+    _countries = api.getCountriesList();
+
     super.initState();
   }
 
@@ -117,6 +118,9 @@ class AppBaseState extends State<AppBase> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
+          actions: [
+            _LiveSwitch(),
+          ],
         ),
         body: (int curr) {
           switch (curr) {
@@ -198,6 +202,38 @@ class AppBaseState extends State<AppBase> {
           },
         ),
       ),
+    );
+  }
+}
+
+class _LiveSwitch extends StatelessWidget {
+  final Key key;
+
+  _LiveSwitch({this.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ScopedModelDescendant<UserInfoModel>(
+          builder: (context, child, model) {
+            return Row(
+              children: [
+                Text(
+                  'LIVE',
+                  style: TextStyle(
+                      color: model.isLive ? Colors.red : Colors.black),
+                ),
+                Switch(
+                    value: model.isLive,
+                    onChanged: (bool) {
+                      model.setIsLive(bool);
+                    })
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 }
