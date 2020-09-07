@@ -1,43 +1,47 @@
 const { GraphQLServer } = require('graphql-yoga');
 const fetch = require('node-fetch');
 
+const options = {
+    headers: {
+        "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+	    "x-rapidapi-key": "321c545a2amshe07deeb6f221be6p1bf2a3jsnd3aafcc969bf",
+        "useQueryString": true
+    }
+}
+
 const typeDefs = `
     type Query {
-        hello(name: String): String!
-        getPerson(id: Int!): Person
+        teams: [Team]
+        games: [Game]
+        notices: [Notice],
+        id: Int,
     }
 
-    type Film {
-        title: String,
-        episode_id: String,
-    }
-
-    type Person {
+    type Team {
+        team_id: Int
         name: String
-        height: String
-        mass: Int
-        hair_color: String
-        skin_color: String,
-        films: [Film],
+        logo: String
+    }
+
+    type Game {
+        gameDate: String
+    }
+
+    type Notice {
+        title: String
     }
 `;
 
 const resolvers = {
-    Person: {
-        films: (person) => {
-            const filmsPromises = person.films.map(async url => {
-                const response = await fetch(url);
-                return response.json();
-            });
-
-            return Promise.all(filmsPromises);
-        }
-    },
     Query: {
-        hello: (_, { name }) => { return `Hello ${name || 'World'}` },
-        getPerson: async (_, { id }) => {
-            const response = await fetch(`https://swapi.dev/api/people/${id}/`);
-            return response.json();
+        id: (_) => {
+            return 24;
+        },
+        teams: async (_) => {
+            const response = await fetch("https://api-football-v1.p.rapidapi.com/v2/teams/league/2", options);
+            const parsed = await response.json();
+            
+            return parsed.api.teams;
         }
     }
 }
