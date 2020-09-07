@@ -13,7 +13,6 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     return ScopedModel<HomePageModel>(
@@ -29,8 +28,12 @@ class HomePageState extends State<HomePage> {
   }
 }
 
+// DISCLAIMER: This will only show the teams of the first league in the country
+// There is no way yet to select different leagues to follow
+// Therefore only the first league will be presented to the end user
+// This will be changed in the future
+// TODO Change functionality
 class _TeamViewWidget extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<HomePageModel>(
