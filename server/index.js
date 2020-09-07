@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 const options = {
     headers: {
         "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
-	    "x-rapidapi-key": "321c545a2amshe07deeb6f221be6p1bf2a3jsnd3aafcc969bf",
+        "x-rapidapi-key": "321c545a2amshe07deeb6f221be6p1bf2a3jsnd3aafcc969bf",
         "useQueryString": true
     }
 }
@@ -24,7 +24,9 @@ const typeDefs = `
     }
 
     type Game {
-        gameDate: String
+        event_date: String
+        homeTeam: Team
+        awayTeam: Team
     }
 
     type Notice {
@@ -33,6 +35,11 @@ const typeDefs = `
 `;
 
 const resolvers = {
+    Game: {
+        homeTeam: (parent) => {
+            console.log(parent);
+        }
+    },
     Query: {
         id: (_) => {
             return 24;
@@ -40,8 +47,15 @@ const resolvers = {
         teams: async (_) => {
             const response = await fetch("https://api-football-v1.p.rapidapi.com/v2/teams/league/2", options);
             const parsed = await response.json();
-            
+
             return parsed.api.teams;
+        },
+        games: async (_) => {
+            const league_id = 524;
+            const response = await fetch(`https://api-football-v1.p.rapidapi.com/v2/fixtures/league/${league_id}/last/10`, options);
+            const parsed = await response.json();
+            
+            return parsed.api.fixtures;
         }
     }
 }
