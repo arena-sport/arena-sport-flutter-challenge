@@ -10,41 +10,32 @@ import 'models.dart';
 // Getters
 ////////////////////////////////////////////////////
 
-Future<List<Country>> getCountriesList() async {
-  var response = await http.get(
-    // api url to get list of countries supported by api
-    "https://api-football-v1.p.rapidapi.com/v2/countries",
-    headers: {
-      // TODO Get API key and fill here
-      'X-RapidAPI-Key': 'XXXXXXXXXXXXXXXXXXXXXXXXX',
-    },
-  );
+Future<List<Country>> getCountriesList() => http
+    .get(
+      // api url to get list of countries supported by api
+      "https://api-football-v1.p.rapidapi.com/v2/countries",
+      headers: {
+        // TODO Get API key and fill here
+        'X-RapidAPI-Key': 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+      },
+    )
+    .then((response) => response.statusCode == 200
+        ? CountryResponse.fromJson(json.decode(response.body)).countries
+        : throw Exception('Failed to load countries.'))
+    .catchError(print);
 
-  if (response.statusCode == 200) {
-    // If returns 200 OK response
-    // Then return the list of countries
-    return CountryResponse.fromJson(json.decode(response.body)).countries;
-  } else {
-    // Not OK
-    throw Exception('Failed to load countries');
-  }
-}
-
-Future<List<League>> getLeaguesInCountry(Country country) async {
-  return await http.get(
-    'https://api-football-v1.p.rapidapi.com/v2/leagues/country/${country.code}',
-    headers: {
-      // TODO Get API key and fill here
-      'X-RapidAPI-Key': 'XXXXXXXXXXXXXXXXXXXXXXXXX',
-    },
-  ).then((response) {
-    if (response.statusCode == 200) {
-      return LeagueResponse.fromJson(json.decode(response.body)).leagues;
-    } else {
-      throw Exception('Failed to load leagues');
-    }
-  }).catchError(print);
-}
+Future<List<League>> getLeaguesInCountry(Country country) => http
+    .get(
+      'https://api-football-v1.p.rapidapi.com/v2/leagues/country/${country.code}',
+      headers: {
+        // TODO Get API key and fill here
+        'X-RapidAPI-Key': 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+      },
+    )
+    .then((response) => response.statusCode == 200
+        ? LeagueResponse.fromJson(json.decode(response.body)).leagues
+        : throw Exception('Failed to load leagues.'))
+    .catchError(print);
 
 Image getCountryImage(Country country) => _getImageFromURL(
       country.flagUrl,
@@ -60,7 +51,7 @@ Image _getImageFromURL(String url,
         {int width, int height, Map<String, String> headers}) =>
     Image.network(
       url,
-      cacheWidth: width,
-      cacheHeight: height,
+      cacheWidth: width == 0 ? null : width,
+      cacheHeight: height == 0 ? null : height,
       headers: headers.isEmpty ? null : headers,
     );
