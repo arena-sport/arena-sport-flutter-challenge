@@ -1,0 +1,27 @@
+type Query {
+    teams: [Team]
+    games: [Game]
+    notices: [Notice]
+}
+
+type Team {
+    team_id: Int
+    name: String
+    logo: String
+}
+
+type Game {
+    event_date: String
+    homeTeam: Team
+    awayTeam: Team
+    goalsHomeTeam: Int
+    goalsAwayTeam: Int
+}
+
+type Notice {
+    title: String
+    description: String
+    url: String
+    urlToImage: String
+    publishedAt: String
+}

@@ -10,6 +10,7 @@
   "keywords": [],
   "description": "",
   "dependencies": {
+    "graphql-config": "^3.0.3",
     "graphql-yoga": "^1.18.3",
     "node-fetch": "^2.6.1"
   },
