@@ -36,6 +36,8 @@ class HomePageState extends State<HomePage> {
 // This will be changed in the future
 // TODO Change functionality
 class _TeamViewWidget extends StatelessWidget {
+  _TeamViewWidget({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<HomePageModel>(
@@ -50,6 +52,50 @@ class _TeamViewWidget extends StatelessWidget {
           scrollDirection: Axis.horizontal,
         );
       },
+    );
+  }
+}
+
+class _UpcomingGamesCard extends StatefulWidget {
+  final LeagueExtra league;
+
+  _UpcomingGamesCard(this.league, {Key key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _UpcomingGamesCardState();
+}
+
+class _UpcomingGamesCardState extends State<_UpcomingGamesCard> {
+  Future<List<Fixture>> fixtures;
+
+  @override
+  void initState() {
+    fixtures = getFixturesFromLeague(widget.league.leagueID);
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Partidos'),
+              FlatButton(
+                  onPressed: () {
+                    // TODO implement Ver todos button functionality
+                  },
+                  child: Text('Ver todos'))
+            ],
+          ),
+          Divider(),
+          Text(widget.league.name),
+        ],
+      ),
     );
   }
 }

@@ -20,12 +20,12 @@ class CounterModel extends Model {
 
 class UserInfoModel extends Model {
   Country _country;
-  List<League> _leagues;
+  List<LeagueExtra> _leagues;
   bool _isLive;
 
   // Getters
   Country get country => _country;
-  List<League> get leagues => _leagues;
+  List<LeagueExtra> get leagues => _leagues;
   bool get isLive => _isLive;
 
   void setUserCountry(Country country) {
@@ -34,7 +34,7 @@ class UserInfoModel extends Model {
     notifyListeners();
   }
 
-  void setUserLeagues(List<League> leagues) {
+  void setUserLeagues(List<LeagueExtra> leagues) {
     _leagues = leagues;
 
     notifyListeners();
@@ -86,55 +86,72 @@ class Country {
 
 class LeagueResponse {
   final int resultCount;
-  final List<League> leagues;
+  final List<LeagueExtra> leagues;
 
   LeagueResponse({this.resultCount, this.leagues});
 
   factory LeagueResponse.fromJson(Map<String, dynamic> json) {
     var data = json['api'];
-    var list = json['leagues'] as List;
+    var list = data['leagues'] as List;
 
     return LeagueResponse(
       resultCount: data['results'],
-      leagues: list.map<League>((j) => League.fromJson(j)).toList(),
+      leagues: list.map<LeagueExtra>((j) => LeagueExtra.fromJson(j)).toList(),
     );
   }
 }
 
 class League {
-  final int leagueId;
   final String name;
-  final String type;
   final String country;
+  final String logoURL;
+  final String flagURL;
+
+  League({
+    this.name,
+    this.country,
+    this.logoURL,
+    this.flagURL,
+  });
+
+  factory League.fromJson(Map<String, dynamic> json) => League(
+        name: json['name'] as String,
+        country: json['country'] as String,
+        logoURL: json['logo'] as String,
+        flagURL: json['flag'] as String,
+      );
+}
+
+class LeagueExtra extends League {
+  final int leagueID;
+  final String type;
   final String countryCode;
   final int season;
   final String seasonStart;
   final String seasonEnd;
-  final String logoUrl;
-  final String flagImageUrl;
   final int standings;
   final int isCurrent;
   final Coverage coverage;
 
-  League({
-    this.leagueId,
-    this.name,
+  LeagueExtra({
+    this.leagueID,
+    String name,
     this.type,
-    this.country,
+    String country,
     this.countryCode,
     this.season,
     this.seasonStart,
     this.seasonEnd,
-    this.logoUrl,
-    this.flagImageUrl,
+    String logoURL,
+    String flagURL,
     this.standings,
     this.isCurrent,
     this.coverage,
-  });
+  }) : super(name: name, country: country, logoURL: logoURL, flagURL: flagURL);
 
-  factory League.fromJson(Map<String, dynamic> json) {
-    return League(
-      leagueId: json['league_id'] as int,
+  factory LeagueExtra.fromJson(Map<String, dynamic> json) {
+    return LeagueExtra(
+      leagueID: json['league_id'] as int,
       name: json['name'] as String,
       type: json['type'] as String,
       country: json['country'] as String,
@@ -142,8 +159,8 @@ class League {
       season: json['season'] as int,
       seasonStart: json['season_start'] as String,
       seasonEnd: json['season_end'] as String,
-      logoUrl: json['logo'] as String,
-      flagImageUrl: json['flag'] as String,
+      logoURL: json['logo'] as String,
+      flagURL: json['flag'] as String,
       standings: json['standings'] as int,
       isCurrent: json['is_current'] as int,
       coverage: json['coverage'] as Coverage,
@@ -200,17 +217,17 @@ class Fixtures {
 
 class TeamListResponse {
   final int resultCount;
-  final List<Team> teams;
+  final List<TeamExtra> teams;
 
   TeamListResponse({this.resultCount, this.teams});
 
   factory TeamListResponse.fromJson(Map<String, dynamic> json) {
     var data = json['api'];
-    var list = json['teams'] as List;
+    var list = data['teams'] as List;
 
     return TeamListResponse(
       resultCount: data['results'] as int,
-      teams: list.map<Team>((e) => Team.fromJson(e)).toList(),
+      teams: list.map<TeamExtra>((e) => TeamExtra.fromJson(e)).toList(),
     );
   }
 }
@@ -218,8 +235,23 @@ class TeamListResponse {
 class Team {
   final int teamID;
   final String name;
-  final String code;
   final String logoURL;
+
+  Team({
+    this.teamID,
+    this.name,
+    this.logoURL,
+  });
+
+  factory Team.fromJson(Map<String, dynamic> json) => Team(
+        teamID: json['team_id'] as int,
+        name: json['team_name'] as String,
+        logoURL: json['logo'] as String,
+      );
+}
+
+class TeamExtra extends Team {
+  final String code;
   final bool isNational;
   final String country;
   final int founded;
@@ -229,11 +261,11 @@ class Team {
   final String venueCity;
   final int venueCapacity;
 
-  Team({
-    this.teamID,
-    this.name,
+  TeamExtra({
+    int teamID,
+    String name,
     this.code,
-    this.logoURL,
+    String logoURL,
     this.isNational,
     this.country,
     this.founded,
@@ -242,10 +274,10 @@ class Team {
     this.venueAddress,
     this.venueCity,
     this.venueCapacity,
-  });
+  }) : super(teamID: teamID, name: name, logoURL: logoURL);
 
-  factory Team.fromJson(Map<String, dynamic> json) {
-    return Team(
+  factory TeamExtra.fromJson(Map<String, dynamic> json) {
+    return TeamExtra(
       teamID: json['team_id'] as int,
       name: json['name'] as String,
       code: json['code'] as String,
@@ -267,17 +299,17 @@ class Team {
 ////////////////////////////////////////////////////
 
 class HomePageModel extends Model {
-  HashSet<Team> _teamsFollowing;
-  HashSet<League> _leaguesFollowing;
+  HashSet<TeamExtra> _teamsFollowing;
+  HashSet<LeagueExtra> _leaguesFollowing;
 
   // Getters
-  HashSet<Team> get teamsFollowing => _teamsFollowing;
-  HashSet<League> get leaguesFollowing => _leaguesFollowing;
+  HashSet<TeamExtra> get teamsFollowing => _teamsFollowing;
+  HashSet<LeagueExtra> get leaguesFollowing => _leaguesFollowing;
 
   // Adds team to the set.
   // Returns true if team (or an equal value) was not yet in the set.
   // Otherwise returns false and the set is not changed.
-  bool addTeam(Team team) {
+  bool addTeam(TeamExtra team) {
     var b = _teamsFollowing.add(team);
 
     notifyListeners();
@@ -286,7 +318,7 @@ class HomePageModel extends Model {
   }
 
   // Adds teams to the set.
-  void addTeams(List<Team> teams) {
+  void addTeams(List<TeamExtra> teams) {
     _teamsFollowing.addAll(teams);
 
     notifyListeners();
@@ -295,7 +327,7 @@ class HomePageModel extends Model {
   // Removes teams from the set.
   // Returns true if team was in the set. Returns false otherwise.
   // The method has no effect if team value was not in the set.
-  bool removeTeam(Team team) {
+  bool removeTeam(TeamExtra team) {
     var b = _teamsFollowing.remove(team);
 
     notifyListeners();
@@ -304,21 +336,21 @@ class HomePageModel extends Model {
   }
 
   // Removes teams from the set.
-  void removeTeams(List<Team> teams) {
+  void removeTeams(List<TeamExtra> teams) {
     _teamsFollowing.removeAll(teams);
 
     notifyListeners();
   }
 
   // Returns true if team is in the set.
-  bool containsTeam(Team team) {
+  bool containsTeam(TeamExtra team) {
     return _teamsFollowing.contains(team);
   }
 
   // Adds league to the set.
   // Returns true if league (or equivalent value) was not yet in the set.
   // Otherwise returns false and the set is not changed.
-  bool addLeague(League league) {
+  bool addLeague(LeagueExtra league) {
     var b = _leaguesFollowing.add(league);
 
     notifyListeners();
@@ -327,7 +359,7 @@ class HomePageModel extends Model {
   }
 
   // Adds leagues to the set.
-  void addLeagues(List<League> leagues) {
+  void addLeagues(List<LeagueExtra> leagues) {
     _leaguesFollowing.addAll(leagues);
 
     notifyListeners();
@@ -336,7 +368,7 @@ class HomePageModel extends Model {
   // Removes leagues from the set.
   // Returns true if team was in the set. Returns false otherwise.
   // The method has no effect if league value was not in the set.
-  bool removeLeague(League league) {
+  bool removeLeague(LeagueExtra league) {
     var b = _leaguesFollowing.remove(league);
 
     notifyListeners();
@@ -345,14 +377,118 @@ class HomePageModel extends Model {
   }
 
   // Removes leagues from the set.
-  void removeLeagues(List<League> leagues) {
+  void removeLeagues(List<LeagueExtra> leagues) {
     _leaguesFollowing.removeAll(leagues);
 
     notifyListeners();
   }
 
   // Returns true if league is in the set.
-  bool containsLeague(League league) {
+  bool containsLeague(LeagueExtra league) {
     return _leaguesFollowing.contains(league);
   }
+}
+
+class FixtureResponse {
+  final int resultCount;
+  final List<Fixture> fixtures;
+
+  FixtureResponse({
+    this.resultCount,
+    this.fixtures,
+  });
+
+  factory FixtureResponse.fromJson(Map<String, dynamic> json) {
+    var data = json['api'];
+    var list = data['fixtures'];
+
+    return FixtureResponse(
+      resultCount: data['results'],
+      fixtures: list.map<Fixture>((json) => Fixture.fromJson(json)).toList(),
+    );
+  }
+}
+
+class Fixture {
+  final int fixtureID;
+  final int leagueID;
+  final League league;
+  final String eventDate;
+  final int eventTimestamp;
+  final int firstHalfStart;
+  final int secondHalfStart;
+  final String round;
+  final String status;
+  final String statusShort;
+  final int elapsed;
+  final String venue;
+  final String referee;
+  final Team homeTeam;
+  final Team awayTeam;
+  final int goalsHomeTeam;
+  final int goalsAwayTeam;
+  final Score score;
+
+  Fixture({
+    this.fixtureID,
+    this.leagueID,
+    this.league,
+    this.eventDate,
+    this.eventTimestamp,
+    this.firstHalfStart,
+    this.secondHalfStart,
+    this.round,
+    this.status,
+    this.statusShort,
+    this.elapsed,
+    this.venue,
+    this.referee,
+    this.homeTeam,
+    this.awayTeam,
+    this.goalsHomeTeam,
+    this.goalsAwayTeam,
+    this.score,
+  });
+
+  factory Fixture.fromJson(Map<String, dynamic> json) => Fixture(
+        fixtureID: json['fixture_id'] as int,
+        leagueID: json['league_id'] as int,
+        league: json['league'] as League,
+        eventDate: json['event_date'] as String,
+        eventTimestamp: json['event_timestamp'] as int,
+        firstHalfStart: json['firstHalfStart'] as int,
+        secondHalfStart: json['secondHalfStart'] as int,
+        round: json['round'] as String,
+        status: json['status'] as String,
+        statusShort: json['statusShort'] as String,
+        elapsed: json['elapsed'] as int,
+        venue: json['venue'] as String,
+        referee: json['referee'] as String,
+        homeTeam: json['homeTeam'] as Team,
+        awayTeam: json['awayTeam'] as Team,
+        goalsHomeTeam: json['goalsHomeTeam'] as int,
+        goalsAwayTeam: json['goalsAwayTeam'] as int,
+        score: json['score'] as Score,
+      );
+}
+
+class Score {
+  final String halftime;
+  final String fullTime;
+  final String extraTime;
+  final String penalty;
+
+  Score({
+    this.halftime,
+    this.fullTime,
+    this.extraTime,
+    this.penalty,
+  });
+
+  factory Score.fromJson(Map<String, dynamic> json) => Score(
+        halftime: json['halftime'] as String,
+        fullTime: json['fulltime'] as String,
+        extraTime: json['extratime'] as String,
+        penalty: json['penalty'] as String,
+      );
 }
