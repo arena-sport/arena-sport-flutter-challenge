@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
 import 'api_models.dart';
-import 'models.dart';
 
 const API_FOOTBALL_HEADERS = {
   'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com',

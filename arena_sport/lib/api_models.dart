@@ -328,3 +328,24 @@ class Score {
         penalty: json['penalty'] as String,
       );
 }
+
+class FixtureResponse {
+  final int resultCount;
+  final List<Fixture> fixtures;
+
+  FixtureResponse({
+    this.resultCount,
+    this.fixtures,
+  });
+
+  factory FixtureResponse.fromJson(Map<String, dynamic> json) {
+    var data = json['api'];
+    var list = data['fixtures'];
+
+    return FixtureResponse(
+      resultCount: data['results'],
+      fixtures: list.map<Fixture>((json) => Fixture.fromJson(json)).toList(),
+    );
+  }
+}
+
