@@ -1,4 +1,6 @@
 import 'package:arena_sport/api.dart';
+import 'api_models.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -43,7 +45,7 @@ class _TeamViewWidget extends StatelessWidget {
     return ScopedModelDescendant<HomePageModel>(
       builder: (context, child, model) {
         return ListView(
-          children: model.teamsFollowing.map<Widget>((team) => IconButton(
+          children: model.mapTeams<Widget>((team) => IconButton(
                 icon: getTeamLogo(team),
                 onPressed: () {
                   // TODO When team is selected from list

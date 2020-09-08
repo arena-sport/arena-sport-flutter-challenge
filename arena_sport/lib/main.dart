@@ -5,6 +5,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'home_page.dart';
 import 'models.dart';
 import 'api.dart' as api;
+import 'api_models.dart';
 
 void main() {
   runApp(MyApp());

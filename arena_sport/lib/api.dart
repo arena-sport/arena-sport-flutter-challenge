@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
+import 'api_models.dart';
 import 'models.dart';
 
 const API_FOOTBALL_HEADERS = {
