@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:scoped_model/scoped_model.dart';
 
 class CounterModel extends Model {
@@ -206,7 +208,10 @@ class TeamListResponse {
     var data = json['api'];
     var list = json['teams'] as List;
 
-
+    return TeamListResponse(
+      resultCount: data['results'] as int,
+      teams: list.map<Team>((e) => Team.fromJson(e)).toList(),
+    );
   }
 }
 
@@ -261,4 +266,93 @@ class Team {
 // Home Page Model
 ////////////////////////////////////////////////////
 
-class HomePageModel extends Model {}
+class HomePageModel extends Model {
+  HashSet<Team> _teamsFollowing;
+  HashSet<League> _leaguesFollowing;
+
+  // Getters
+  HashSet<Team> get teamsFollowing => _teamsFollowing;
+  HashSet<League> get leaguesFollowing => _leaguesFollowing;
+
+  // Adds team to the set.
+  // Returns true if team (or an equal value) was not yet in the set.
+  // Otherwise returns false and the set is not changed.
+  bool addTeam(Team team) {
+    var b = _teamsFollowing.add(team);
+
+    notifyListeners();
+
+    return b;
+  }
+
+  // Adds teams to the set.
+  void addTeams(List<Team> teams) {
+    _teamsFollowing.addAll(teams);
+
+    notifyListeners();
+  }
+
+  // Removes teams from the set.
+  // Returns true if team was in the set. Returns false otherwise.
+  // The method has no effect if team value was not in the set.
+  bool removeTeam(Team team) {
+    var b = _teamsFollowing.remove(team);
+
+    notifyListeners();
+
+    return b;
+  }
+
+  // Removes teams from the set.
+  void removeTeams(List<Team> teams) {
+    _teamsFollowing.removeAll(teams);
+
+    notifyListeners();
+  }
+
+  // Returns true if team is in the set.
+  bool containsTeam(Team team) {
+    return _teamsFollowing.contains(team);
+  }
+
+  // Adds league to the set.
+  // Returns true if league (or equivalent value) was not yet in the set.
+  // Otherwise returns false and the set is not changed.
+  bool addLeague(League league) {
+    var b = _leaguesFollowing.add(league);
+
+    notifyListeners();
+
+    return b;
+  }
+
+  // Adds leagues to the set.
+  void addLeagues(List<League> leagues) {
+    _leaguesFollowing.addAll(leagues);
+
+    notifyListeners();
+  }
+
+  // Removes leagues from the set.
+  // Returns true if team was in the set. Returns false otherwise.
+  // The method has no effect if league value was not in the set.
+  bool removeLeague(League league) {
+    var b = _leaguesFollowing.remove(league);
+
+    notifyListeners();
+
+    return b;
+  }
+
+  // Removes leagues from the set.
+  void removeLeagues(List<League> leagues) {
+    _leaguesFollowing.removeAll(leagues);
+
+    notifyListeners();
+  }
+
+  // Returns true if league is in the set.
+  bool containsLeague(League league) {
+    return _leaguesFollowing.contains(league);
+  }
+}

@@ -36,10 +36,23 @@ Future<List<League>> getLeaguesInCountry(Country country) => http
         : throw Exception('Failed to load leagues.'))
     .catchError(print);
 
+Future<List<Team>> getTeamsInLeague(League league) => http
+    .get(
+      'https://api-football-v1.p.rapidapi.com/v2/teams/league/${league.leagueId}',
+      headers: API_FOOTBALL_HEADERS,
+    )
+    .then((response) => response.statusCode == 200
+        ? TeamListResponse.fromJson(json.decode(response.body)).teams
+        : throw Exception('Failed to load teams.'))
+    .catchError(print);
+
+Image getTeamLogo(Team team) => _getImageFromURL(team.logoURL,
+    width: 16, height: 16, headers: API_FOOTBALL_HEADERS);
+
 Image getCountryImage(Country country) => _getImageFromURL(
       country.flagUrl,
-      width: 16,
-      height: 16,
+      width: 24,
+      height: 24,
       headers: API_FOOTBALL_HEADERS,
     );
 
