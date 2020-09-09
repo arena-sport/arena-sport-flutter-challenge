@@ -48,15 +48,11 @@ const resolvers = {
         }),
         goalie: (parent) => __awaiter(void 0, void 0, void 0, function* () {
             const team_id = parent.team_id; // TODO: get from parent
-            const year = 2020; // TODO: get from datetime
+            const year = 2019; // TODO: get from datetime
             const response = yield fetch(`https://api-football-v1.p.rapidapi.com/v2/players/squad/${team_id}/${year}`, football_api_options);
             const parsed = yield response.json();
-            const goalie = parsed.api.players.filter((player, index, array) => player.position == "Goalkeeper");
-            console.log(parent.teamName);
-            console.log(goalie);
-            console.log("\n");
-            return goalie;
-            console.log(parsed.api.players);
+            const goalie = parsed.api.players.filter((player) => player.position == "Goalkeeper");
+            return goalie[0] || null;
         })
     },
     GameResult: {
