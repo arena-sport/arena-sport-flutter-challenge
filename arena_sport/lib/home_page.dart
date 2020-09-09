@@ -44,14 +44,14 @@ class _TeamViewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<HomePageModel>(
       builder: (context, child, model) {
-        return ListView(
+        return Row(
           children: model.mapTeams<Widget>((team) => IconButton(
                 icon: getTeamLogo(team),
                 onPressed: () {
                   // TODO When team is selected from list
                 },
               )),
-          scrollDirection: Axis.horizontal,
+          // scrollDirection: Axis.horizontal,
         );
       },
     );
@@ -98,6 +98,26 @@ class _UpcomingGamesCardState extends State<_UpcomingGamesCard> {
           Text(widget.league.name),
         ],
       ),
+    );
+  }
+}
+
+class _FixtureTile extends StatelessWidget {
+  final Fixture _fixture;
+
+  _FixtureTile(this._fixture, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [],
+        ),
+        Row(),
+      ],
     );
   }
 }

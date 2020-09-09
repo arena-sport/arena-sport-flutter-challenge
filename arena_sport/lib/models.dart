@@ -30,6 +30,16 @@ class UserInfoModel extends Model {
   List<LeagueExtra> get leagues => _leagues;
   bool get isLive => _isLive;
 
+  UserInfoModel()
+      : _country = null,
+        _leagues = List<LeagueExtra>(),
+        _isLive = false;
+
+  factory UserInfoModel.fromSave(String filePath) {
+    // TODO implement fetching UserInfoModel from persistent storage
+    throw Exception('Not yet implemented.');
+  }
+
   void setUserCountry(Country country) {
     _country = country;
 
@@ -56,6 +66,15 @@ class UserInfoModel extends Model {
 class HomePageModel extends Model {
   HashSet<TeamExtra> _teamsFollowing;
   HashSet<LeagueExtra> _leaguesFollowing;
+
+  HomePageModel()
+      : _teamsFollowing = HashSet<TeamExtra>(),
+        _leaguesFollowing = HashSet<LeagueExtra>();
+
+  factory HomePageModel.fromSave(String filePath) {
+    // TODO implement fetching from save
+    throw Exception('Not yet implemented.');
+  }
 
   // Getters
   // HashSet<TeamExtra> get teamsFollowing => _teamsFollowing;
@@ -102,8 +121,8 @@ class HomePageModel extends Model {
     return _teamsFollowing.contains(team);
   }
 
-  Iterable<T> mapTeams<T>(T f(Team t)) {
-    return _teamsFollowing.map<T>(f);
+  List<T> mapTeams<T>(T f(Team t)) {
+    return _teamsFollowing.map<T>(f).toList();
   }
 
   // Adds league to the set.
@@ -147,7 +166,7 @@ class HomePageModel extends Model {
     return _leaguesFollowing.contains(league);
   }
 
-  Iterable<T> mapLeagues<T>(T f(League l)) {
-    return _leaguesFollowing.map<T>(f);
+  List<T> mapLeagues<T>(T f(League l)) {
+    return _leaguesFollowing.map<T>(f).toList();
   }
 }

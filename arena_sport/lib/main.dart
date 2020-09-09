@@ -18,7 +18,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'ARENA',
       theme: ThemeData(
-        primarySwatch: Colors.white,
+        primaryColor: Colors.white,
+        accentColor: Colors.grey,
+        // primarySwatch: Colors.grey,
         // This makes the visual density adapt to the platform that you run
         // the app on. For desktop platforms, the controls will be smaller and
         // closer together (more dense) than on mobile platforms.
@@ -111,15 +113,18 @@ class AppBaseState extends State<AppBase> {
 
   @override
   Widget build(BuildContext context) {
-    if (_userInfo.country == null) {
+    /*if (_userInfo.country == null) {
       _chooseCountry(context, _choseCountry);
-    }
+    }*/
 
     return ScopedModel(
       model: _userInfo,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(
+            widget.title,
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
           actions: [
             _LiveSwitch(),
             _SearchButton(),
@@ -144,55 +149,65 @@ class AppBaseState extends State<AppBase> {
             BottomNavigationBarItem(
                 icon: const Icon(
                   Icons.home_outlined,
-                  color: Colors.white70,
+                  color: Colors.grey,
+                  size: 36.0,
                 ),
-                // label: '',
+                label: 'Home',
                 activeIcon: const Icon(
                   Icons.home_outlined,
-                  color: Colors.black,
+                  color: Colors.blueAccent,
+                  size: 36.0,
                 )),
             BottomNavigationBarItem(
               icon: const Icon(
                 Icons.bar_chart,
-                color: Colors.white70,
+                color: Colors.grey,
+                size: 36.0,
               ),
-              // label: '',
+              label: 'Stats',
               activeIcon: const Icon(
                 Icons.bar_chart,
-                color: Colors.black,
+                color: Colors.blueAccent,
+                size: 36.0,
               ),
             ),
             BottomNavigationBarItem(
               icon: const Icon(
                 Icons.ac_unit,
-                color: Colors.white70,
+                color: Colors.grey,
+                size: 36.0,
               ),
-              // label: '',
+              label: '',
               activeIcon: const Icon(
                 Icons.ac_unit,
-                color: Colors.black,
+                color: Colors.blueAccent,
+                size: 36.0,
               ),
             ),
             BottomNavigationBarItem(
               icon: const Icon(
                 Icons.live_tv,
-                color: Colors.black,
+                color: Colors.grey,
+                size: 36.0,
               ), // can be changed for Icons.tv
-              // label: '',
+              label: '',
               activeIcon: const Icon(
                 Icons.live_tv,
-                color: Colors.white70,
+                color: Colors.blueAccent,
+                size: 36.0,
               ),
             ),
             BottomNavigationBarItem(
               icon: const Icon(
                 Icons.language,
-                color: Colors.black,
+                color: Colors.grey,
+                size: 36.0,
               ),
-              // label: '',
+              label: '',
               activeIcon: const Icon(
                 Icons.language,
-                color: Colors.white70,
+                color: Colors.blueAccent,
+                size: 36.0,
               ),
             )
           ],
@@ -225,7 +240,9 @@ class _LiveSwitch extends StatelessWidget {
                 Text(
                   'LIVE',
                   style: TextStyle(
-                      color: model.isLive ? Colors.red : Colors.black),
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: model.isLive ? Colors.red : Colors.grey),
                 ),
                 Switch(
                     value: model.isLive,
@@ -248,12 +265,17 @@ class _SearchButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RawMaterialButton(
-      elevation: 2.0,
-      fillColor: Colors.white,
-      child: Icon(Icons.search, size: 35.0),
-      padding: EdgeInsets.all(15.0),
+    return MaterialButton(
+      color: Colors.white,
+      child: Icon(
+        Icons.search,
+        size: 24.0,
+        color: Colors.grey,
+      ),
+      padding: EdgeInsets.all(8.0),
       shape: CircleBorder(),
+      minWidth: 24.0,
+      height: 24.0,
       onPressed: () => Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => SearchPage()),
