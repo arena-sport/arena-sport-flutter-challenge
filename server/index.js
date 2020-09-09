@@ -23,13 +23,45 @@ const football_api_options = {
         "useQueryString": true
     }
 };
-const newsAPI = {
-    key: '18dcef7737a7410b846396edb9dc9fa2'
-};
 const resolvers = {
     Team: {
         name: (parent) => {
-            return parent.team_name;
+            return parent.team_name || parent.name;
+        }
+    },
+    Standing: {
+        latest_games: (parent) => __awaiter(void 0, void 0, void 0, function* () {
+            const team_id = parent.team_id;
+            const LIMIT_TO = 5;
+            // Last 5 games of given team
+            const response = yield fetch(`https://api-football-v1.p.rapidapi.com/v2/fixtures/team/${team_id}/last/${LIMIT_TO}`, football_api_options);
+            const parsed = yield response.json();
+            // console.log(parsed.api.fixtures);
+            return parsed.api.fixtures;
+        }),
+        goal_averages: (parent) => __awaiter(void 0, void 0, void 0, function* () {
+            const response = yield fetch(`https://api-football-v1.p.rapidapi.com/v2/statistics/2/${parent.team_id}`, football_api_options);
+            const parsed = yield response.json();
+            const goal_averages = parsed.api.statistics.goalsAvg;
+            const goalsForAvgTotal = goal_averages.goalsFor.total;
+            return goalsForAvgTotal;
+        }),
+        goalie: (parent) => __awaiter(void 0, void 0, void 0, function* () {
+            const team_id = parent.team_id; // TODO: get from parent
+            const year = 2020; // TODO: get from datetime
+            const response = yield fetch(`https://api-football-v1.p.rapidapi.com/v2/players/squad/${team_id}/${year}`, football_api_options);
+            const parsed = yield response.json();
+            const goalie = parsed.api.players.filter((player, index, array) => player.position == "Goalkeeper");
+            console.log(parent.teamName);
+            console.log(goalie);
+            console.log("\n");
+            return goalie;
+            console.log(parsed.api.players);
+        })
+    },
+    GameResult: {
+        score: (parent) => {
+            return parent.score.fulltime;
         }
     },
     Query: {
@@ -52,6 +84,17 @@ const resolvers = {
                 `apiKey=${secrets["NEWS_API"]}`);
             const parsed = yield response.json();
             return parsed.articles;
+        }),
+        compareTeams: (_, { teamNames }) => __awaiter(void 0, void 0, void 0, function* () {
+            const league_id = 524;
+            // GET team standings throughout league.
+            const response = yield fetch(`https://api-football-v1.p.rapidapi.com/v2/leagueTable/${league_id}`, football_api_options);
+            const parsed = yield response.json();
+            // Filter to just the 2 teams requested
+            const teamsToCompare = parsed.api.standings[0].filter((element, index, array) => {
+                return teamNames.includes(element.teamName);
+            });
+            return teamsToCompare;
         })
     }
 };

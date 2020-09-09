@@ -2,6 +2,7 @@ type Query {
     teams: [Team]
     games: [Game]
     notices: [Notice]
+    compareTeams(teamNames: [String]): [Standing]
 }
 
 type Team {
@@ -24,4 +25,36 @@ type Notice {
     url: String
     urlToImage: String
     publishedAt: String
+}
+
+type Standing {
+    rank: Int
+    team_id: Int
+    teamName: String
+    logo: String
+    victories: Int
+    all: GamesStats
+    latest_games: [GameResult]
+    goal_averages: Float
+    goalie: Player
+}
+
+type Player {
+    player_id: Int
+    player_name: String
+    urlToImage: String
+    position: String
+}
+
+type GameResult {
+    fixture_id: Int
+    homeTeam: Team
+    awayTeam: Team
+    score: String
+}
+
+type GamesStats {
+    win: Int
+    draw: Int
+    lose: Int
 }
