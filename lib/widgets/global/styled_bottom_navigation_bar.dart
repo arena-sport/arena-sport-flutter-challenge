@@ -1,4 +1,6 @@
+import 'package:arena/providers/tab-provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class StyledBottomNavigationBar extends StatefulWidget {
   @override
@@ -18,12 +20,11 @@ class _StyledBottomNavigationBarState extends State<StyledBottomNavigationBar>
       showUnselectedLabels: false,
       selectedItemColor: Colors.blue,
       unselectedItemColor: Colors.grey.shade800,
-      currentIndex: currentTab,
+      // currentIndex: currentTab,
+      currentIndex: context.watch<TabProvider>().currentTab,
       items: tabs,
-      onTap: (value) {
-        setState(() {
-          currentTab = value;
-        });
+      onTap: (tabIndex) {
+        context.read<TabProvider>().setTab(tabIndex);
       },
     );
   }
