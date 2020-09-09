@@ -9,17 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const secrets = require("./secrets.json");
 const { GraphQLServer } = require('graphql-yoga');
+// Setup for API requests
+const secrets = require("./secrets.json");
+const querystring = require('querystring');
 const fetch = require('node-fetch');
-// Get type definitions
+// Get schema (type defs)
 const fs = require('fs');
 const path = require('path');
 const typeDefs = fs.readFileSync(path.join(__dirname, "schema.graphql"), "utf8");
 const football_api_options = {
     headers: {
-        "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
-        "x-rapidapi-key": secrets['API_FOOTBALL'],
+        // "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+        "x-rapidapi-key": secrets['RAPID_API'],
         "useQueryString": true
     }
 };
@@ -28,6 +30,20 @@ const resolvers = {
         name: (parent) => {
             return parent.team_name || parent.name;
         }
+    },
+    Player: {
+        /** Grabs the url to the first image from Bing matching desired player headshot. */
+        urlToImage: (parent) => __awaiter(void 0, void 0, void 0, function* () {
+            const name = parent.player_name;
+            const query = querystring.encode({
+                count: "1",
+                q: `${name} soccer headshot`
+            });
+            const baseURL = `https://bing-image-search1.p.rapidapi.com/images/search?${query}`;
+            const response = yield fetch(baseURL, football_api_options);
+            const parsed = yield response.json();
+            return parsed.value[0].thumbnailUrl;
+        })
     },
     Standing: {
         latest_games: (parent) => __awaiter(void 0, void 0, void 0, function* () {
