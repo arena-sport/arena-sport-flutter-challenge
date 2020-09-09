@@ -73,12 +73,12 @@ class HomePageModel extends Model {
 
   factory HomePageModel.fromSave(String filePath) {
     // TODO implement fetching from save
-    throw Exception('Not yet implemented.');
+    return HomePageModel();
   }
 
   // Getters
-  // HashSet<TeamExtra> get teamsFollowing => _teamsFollowing;
-  // HashSet<LeagueExtra> get leaguesFollowing => _leaguesFollowing;
+  HashSet<TeamExtra> get teamsFollowing => _teamsFollowing;
+  HashSet<LeagueExtra> get leaguesFollowing => _leaguesFollowing;
 
   // Adds team to the set.
   // Returns true if team (or an equal value) was not yet in the set.

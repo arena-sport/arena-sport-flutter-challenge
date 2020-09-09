@@ -4,8 +4,6 @@ import 'package:scoped_model/scoped_model.dart';
 
 import 'home_page.dart';
 import 'models.dart';
-import 'api.dart' as api;
-import 'api_models.dart';
 
 void main() {
   runApp(MyApp());
@@ -42,7 +40,6 @@ class AppBase extends StatefulWidget {
 
 class AppBaseState extends State<AppBase> {
   int _currentIndex = 0;
-  Future<List<Country>> _countries;
 
   // models
   final UserInfoModel _userInfo =
@@ -50,64 +47,8 @@ class AppBaseState extends State<AppBase> {
   final HomePageModel _homePageModel =
       HomePageModel(); // TODO also retrieve from memory
 
-  void _chooseCountry(BuildContext context, giveCountry c) {
-    showModalBottomSheet(
-      context: context,
-      isDismissible: false,
-      builder: (BuildContext context) {
-        return FutureBuilder<List<Country>>(
-          future: _countries,
-          builder:
-              (BuildContext context, AsyncSnapshot<List<Country>> snapshot) {
-            if (snapshot.hasData) {
-              // If data has come through successfully
-              // Return list of tile with countries to select from
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    // Show flag logo
-                    leading: api.getCountryImage(
-                      snapshot.data[index],
-                    ),
-                    // Show Country name
-                    title: Text(snapshot.data[index].country),
-                    // if chosen, return country chosen and then remove the bottomsheet
-                    onTap: () {
-                      c(snapshot.data[index]);
-                      Navigator.pop(context);
-                    },
-                  );
-                },
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('ERROR'),
-              );
-            } else {
-              // If still waiting for results, show progress indicator
-              return Center(
-                child: SizedBox(
-                  child: CircularProgressIndicator(),
-                  width: 60,
-                  height: 60,
-                ),
-              );
-            }
-          },
-        );
-      },
-    );
-  }
-
-  void _choseCountry(Country country) {
-    _userInfo.setUserCountry(country);
-  }
-
   @override
   void initState() {
-    _countries = api.getCountriesList();
-
     super.initState();
   }
 
@@ -127,7 +68,7 @@ class AppBaseState extends State<AppBase> {
           ),
           actions: [
             _LiveSwitch(),
-            _SearchButton(),
+            _SearchButton(_homePageModel),
           ],
         ),
         body: (int curr) {
@@ -236,19 +177,23 @@ class _LiveSwitch extends StatelessWidget {
         ScopedModelDescendant<UserInfoModel>(
           builder: (context, child, model) {
             return Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'LIVE',
+                  'Live',
                   style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
-                      color: model.isLive ? Colors.red : Colors.grey),
+                      color: model.isLive ? Colors.red : Colors.grey[700]),
                 ),
                 Switch(
-                    value: model.isLive,
-                    onChanged: (bool) {
-                      model.setIsLive(bool);
-                    })
+                  value: model.isLive,
+                  onChanged: (bool) {
+                    model.setIsLive(bool);
+                  },
+                  inactiveTrackColor: Colors.grey[300],
+                  inactiveThumbColor: Colors.grey,
+                ),
               ],
             );
           },
@@ -260,27 +205,30 @@ class _LiveSwitch extends StatelessWidget {
 
 class _SearchButton extends StatelessWidget {
   final Key key;
+  final HomePageModel _homePageModel;
 
-  _SearchButton({this.key}) : super(key: key);
+  _SearchButton(this._homePageModel, {this.key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-      color: Colors.white,
-      child: Icon(
-        Icons.search,
-        size: 24.0,
-        color: Colors.grey,
-      ),
-      padding: EdgeInsets.all(8.0),
-      shape: CircleBorder(),
-      minWidth: 24.0,
-      height: 24.0,
-      onPressed: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => SearchPage()),
-      ),
-    );
+        color: Colors.grey[300],
+        child: Icon(
+          Icons.search_rounded,
+          size: 28.0,
+          color: Colors.grey,
+        ),
+        padding: EdgeInsets.all(4.0),
+        shape: CircleBorder(),
+        minWidth: 24.0,
+        height: 24.0,
+        onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      SearchPage(_homePageModel.leaguesFollowing)),
+              // TODO implement adding leagues from newFollowing to _homePageModel
+            ).then((value) => null));
   }
 }
 

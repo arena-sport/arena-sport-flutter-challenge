@@ -26,6 +26,16 @@ Future<List<Country>> getCountriesList() => http
         : throw Exception('Failed to load countries.'))
     .catchError(print);
 
+Future<List<LeagueExtra>> searchLeagues(String text) => http
+    .get(
+      'https://api-football-v1.p.rapidapi.com/v2/leagues/search/${text.trim().replaceAll(RegExp(' '), '_')}',
+      headers: API_FOOTBALL_HEADERS,
+    )
+    .then((response) => response.statusCode == 200
+        ? LeagueResponse.fromJson(json.decode(response.body)).leagues
+        : throw Exception('Failed to load search results.'))
+    .catchError(print);
+
 Future<List<LeagueExtra>> getLeaguesInCountry(Country country) => http
     .get(
       'https://api-football-v1.p.rapidapi.com/v2/leagues/country/${country.code}',
@@ -55,6 +65,9 @@ Future<List<Fixture>> getFixturesFromLeague(int leagueID) => http
         : throw Exception('Failed to load fixtures from league.'))
     .catchError(print);
 
+Image getLeagueLogo(LeagueExtra league) =>
+    _getImageFromURL(league.logoURL, width: 48, headers: API_FOOTBALL_HEADERS);
+
 Image getTeamLogo(TeamExtra team) => _getImageFromURL(team.logoURL,
     width: 16, height: 16, headers: API_FOOTBALL_HEADERS);
 
@@ -65,6 +78,7 @@ Image getCountryImage(Country country) => _getImageFromURL(
       headers: API_FOOTBALL_HEADERS,
     );
 
+// TODO Find way to catch exceptions thrown when image cannot be retrieved
 Image _getImageFromURL(String url,
         {int width, int height, Map<String, String> headers}) =>
     Image.network(

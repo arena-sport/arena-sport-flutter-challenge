@@ -114,7 +114,7 @@ class LeagueExtra extends League {
       flagURL: json['flag'] as String,
       standings: json['standings'] as int,
       isCurrent: json['is_current'] as int,
-      coverage: json['coverage'] as Coverage,
+      coverage: Coverage.fromJson(json['coverage']),
     );
   }
 }
@@ -139,7 +139,7 @@ class Coverage {
   factory Coverage.fromJson(Map<String, dynamic> json) {
     return Coverage(
       standings: json['standings'] as bool,
-      fixtures: json['fixtures'] as Fixtures,
+      fixtures: Fixtures.fromJson(json['fixtures']),
       players: json['players'] as bool,
       topScorers: json['topScorers'] as bool,
       predictions: json['predictions'] as bool,
