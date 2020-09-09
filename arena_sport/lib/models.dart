@@ -37,7 +37,7 @@ class UserInfoModel extends Model {
 
   factory UserInfoModel.fromSave(String filePath) {
     // TODO implement fetching UserInfoModel from persistent storage
-    throw Exception('Not yet implemented.');
+    return UserInfoModel();
   }
 
   void setUserCountry(Country country) {
@@ -79,6 +79,12 @@ class HomePageModel extends Model {
   // Getters
   HashSet<TeamExtra> get teamsFollowing => _teamsFollowing;
   HashSet<LeagueExtra> get leaguesFollowing => _leaguesFollowing;
+
+  void setTeams(HashSet<TeamExtra> teams) {
+    _teamsFollowing = teams;
+
+    notifyListeners();
+  }
 
   // Adds team to the set.
   // Returns true if team (or an equal value) was not yet in the set.
@@ -123,6 +129,12 @@ class HomePageModel extends Model {
 
   List<T> mapTeams<T>(T f(Team t)) {
     return _teamsFollowing.map<T>(f).toList();
+  }
+
+  void setLeagues(HashSet<LeagueExtra> leagues) {
+    _leaguesFollowing = leagues;
+
+    notifyListeners();
   }
 
   // Adds league to the set.

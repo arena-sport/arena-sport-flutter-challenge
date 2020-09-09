@@ -1,7 +1,10 @@
+import 'dart:collection';
+
 import 'package:arena_sport/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import 'api_models.dart';
 import 'home_page.dart';
 import 'models.dart';
 
@@ -43,9 +46,9 @@ class AppBaseState extends State<AppBase> {
 
   // models
   final UserInfoModel _userInfo =
-      UserInfoModel(); // TODO get saved user info from memory
+      UserInfoModel.fromSave(''); // TODO get saved user info from memory
   final HomePageModel _homePageModel =
-      HomePageModel(); // TODO also retrieve from memory
+      HomePageModel.fromSave(''); // TODO also retrieve from memory
 
   @override
   void initState() {
@@ -224,11 +227,10 @@ class _SearchButton extends StatelessWidget {
         height: 24.0,
         onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(
+              MaterialPageRoute<HashSet<LeagueExtra>>(
                   builder: (context) =>
                       SearchPage(_homePageModel.leaguesFollowing)),
-              // TODO implement adding leagues from newFollowing to _homePageModel
-            ).then((value) => null));
+            ).then((response) => _homePageModel.setLeagues(response)));
   }
 }
 

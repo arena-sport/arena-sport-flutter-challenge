@@ -44,6 +44,7 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<List<LeagueExtra>> searchLeagues(String search) =>
       api.searchLeagues(search).then((response) {
+        // Removes all leagues that are not currently in season
         response.removeWhere((league) => league.season != 2020);
         return response;
       });
