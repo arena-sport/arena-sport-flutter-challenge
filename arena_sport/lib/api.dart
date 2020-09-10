@@ -68,13 +68,13 @@ Future<List<Fixture>> getFixturesFromLeague(int leagueID) => http
 Image getLeagueLogo(LeagueExtra league) =>
     _getImageFromURL(league.logoURL, width: 48, headers: API_FOOTBALL_HEADERS);
 
-Image getTeamLogo(TeamExtra team) => _getImageFromURL(team.logoURL,
-    width: 16, height: 16, headers: API_FOOTBALL_HEADERS);
+Image getTeamLogo(String url) =>
+    _getImageFromURL(url, width: 64, height: 64, headers: API_FOOTBALL_HEADERS);
 
 Image getCountryImage(Country country) => _getImageFromURL(
       country.flagUrl,
-      width: 24,
-      height: 24,
+      width: 32,
+      height: 32,
       headers: API_FOOTBALL_HEADERS,
     );
 

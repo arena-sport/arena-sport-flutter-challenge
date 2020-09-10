@@ -289,7 +289,7 @@ class Fixture {
   factory Fixture.fromJson(Map<String, dynamic> json) => Fixture(
         fixtureID: json['fixture_id'] as int,
         leagueID: json['league_id'] as int,
-        league: json['league'] as League,
+        league: League.fromJson(json['league']),
         eventDate: json['event_date'] as String,
         eventTimestamp: json['event_timestamp'] as int,
         firstHalfStart: json['firstHalfStart'] as int,
@@ -300,11 +300,11 @@ class Fixture {
         elapsed: json['elapsed'] as int,
         venue: json['venue'] as String,
         referee: json['referee'] as String,
-        homeTeam: json['homeTeam'] as Team,
-        awayTeam: json['awayTeam'] as Team,
+        homeTeam: Team.fromJson(json['homeTeam']),
+        awayTeam: Team.fromJson(json['awayTeam']),
         goalsHomeTeam: json['goalsHomeTeam'] as int,
         goalsAwayTeam: json['goalsAwayTeam'] as int,
-        score: json['score'] as Score,
+        score: Score.fromJson(json['score']),
       );
 }
 
