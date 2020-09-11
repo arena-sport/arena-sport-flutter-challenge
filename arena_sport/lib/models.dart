@@ -63,122 +63,113 @@ class UserInfoModel extends Model {
 // Home Page Model
 ////////////////////////////////////////////////////
 
+class ModelHashSet<E> {
+  HashSet<E> _hashSet;
+  void Function() _notifyListeners;
+
+  ModelHashSet(HashSet<E> s) {
+    this._hashSet = s;
+  }
+
+  factory ModelHashSet.fromSave(String filePath) {
+    // TODO implement
+    throw Exception('Not yet implemented.');
+  }
+
+  factory ModelHashSet.fromJson(Map<String, dynamic> json) {
+    // TODO implement
+    throw Exception('Not yet implemented.');
+  }
+
+  void notifyWith(void Function() notify) {
+    this._notifyListeners = notify;
+  }
+
+  // Get size of Set
+  int get length => this._hashSet.length;
+  // Get first element in set
+  E get first => this._hashSet.first;
+
+  // sets the new current HashSet to the provided HashSet
+  void set(HashSet<E> set) {
+    this._hashSet = set;
+
+    this._notifyListeners();
+  }
+
+  // Adds league to the set.
+  // Returns true if league (or equivalent value) was not yet in the set.
+  // Otherwise returns false and the set is not changed.
+  bool add(E item) {
+    bool b = this._hashSet.add(item);
+
+    this._notifyListeners();
+
+    return b;
+  }
+
+  // Adds leagues to the set.
+  void addAll(Iterable<E> elements) {
+    this._hashSet.addAll(elements);
+
+    this._notifyListeners();
+  }
+
+  // Removes leagues from the set.
+  // Returns true if team was in the set. Returns false otherwise.
+  // The method has no effect if league value was not in the set.
+  bool remove(E item) {
+    bool b = this._hashSet.remove(item);
+
+    this._notifyListeners();
+
+    return b;
+  }
+
+  // Removes leagues from the set.
+  void removeAll(Iterable<E> elements) {
+    this._hashSet.removeAll(elements);
+
+    this._notifyListeners();
+  }
+
+  // Returns true if team is in the set.
+  bool contains(E item) {
+    bool b = this._hashSet.contains(item);
+
+    this._notifyListeners();
+
+    return b;
+  }
+
+  Iterable<T> map<T>(T func(E value)) {
+    return _hashSet.map(func);
+  }
+}
+
 class HomePageModel extends Model {
-  HashSet<TeamExtra> _teamsFollowing;
-  HashSet<LeagueExtra> _leaguesFollowing;
+  ModelHashSet<TeamExtra> _teamsFollowing;
+  ModelHashSet<LeagueExtra> _leaguesFollowing;
 
   HomePageModel()
-      : _teamsFollowing = HashSet<TeamExtra>(),
-        _leaguesFollowing = HashSet<LeagueExtra>();
+      : _teamsFollowing = ModelHashSet<TeamExtra>(HashSet<TeamExtra>()),
+        _leaguesFollowing = ModelHashSet<LeagueExtra>(HashSet<LeagueExtra>());
 
   factory HomePageModel.fromSave(String filePath) {
     // TODO implement fetching from save
     return HomePageModel();
   }
 
+  factory HomePageModel.fromJson(Map<String, dynamic> json) {
+    // TODO implement
+    throw Exception('Not yet implemented.');
+  }
+
   // Getters
-  HashSet<TeamExtra> get teamsFollowing => _teamsFollowing;
-  HashSet<LeagueExtra> get leaguesFollowing => _leaguesFollowing;
+  ModelHashSet<TeamExtra> get teamsFollowing => _teamsFollowing;
+  ModelHashSet<LeagueExtra> get leaguesFollowing => _leaguesFollowing;
 
-  void setTeams(HashSet<TeamExtra> teams) {
-    _teamsFollowing = teams;
-
-    notifyListeners();
-  }
-
-  // Adds team to the set.
-  // Returns true if team (or an equal value) was not yet in the set.
-  // Otherwise returns false and the set is not changed.
-  bool addTeam(TeamExtra team) {
-    var b = _teamsFollowing.add(team);
-
-    notifyListeners();
-
-    return b;
-  }
-
-  // Adds teams to the set.
-  void addTeams(List<TeamExtra> teams) {
-    _teamsFollowing.addAll(teams);
-
-    notifyListeners();
-  }
-
-  // Removes teams from the set.
-  // Returns true if team was in the set. Returns false otherwise.
-  // The method has no effect if team value was not in the set.
-  bool removeTeam(TeamExtra team) {
-    var b = _teamsFollowing.remove(team);
-
-    notifyListeners();
-
-    return b;
-  }
-
-  // Removes teams from the set.
-  void removeTeams(List<TeamExtra> teams) {
-    _teamsFollowing.removeAll(teams);
-
-    notifyListeners();
-  }
-
-  // Returns true if team is in the set.
-  bool containsTeam(TeamExtra team) {
-    return _teamsFollowing.contains(team);
-  }
-
-  List<T> mapTeams<T>(T f(Team t)) {
-    return _teamsFollowing.map<T>(f).toList();
-  }
-
-  void setLeagues(HashSet<LeagueExtra> leagues) {
-    _leaguesFollowing = leagues;
-
-    notifyListeners();
-  }
-
-  // Adds league to the set.
-  // Returns true if league (or equivalent value) was not yet in the set.
-  // Otherwise returns false and the set is not changed.
-  bool addLeague(LeagueExtra league) {
-    var b = _leaguesFollowing.add(league);
-
-    notifyListeners();
-
-    return b;
-  }
-
-  // Adds leagues to the set.
-  void addLeagues(List<LeagueExtra> leagues) {
-    _leaguesFollowing.addAll(leagues);
-
-    notifyListeners();
-  }
-
-  // Removes leagues from the set.
-  // Returns true if team was in the set. Returns false otherwise.
-  // The method has no effect if league value was not in the set.
-  bool removeLeague(LeagueExtra league) {
-    var b = _leaguesFollowing.remove(league);
-
-    notifyListeners();
-
-    return b;
-  }
-
-  // Removes leagues from the set.
-  void removeLeagues(List<LeagueExtra> leagues) {
-    _leaguesFollowing.removeAll(leagues);
-
-    notifyListeners();
-  }
-
-  // Returns true if league is in the set.
-  bool containsLeague(LeagueExtra league) {
-    return _leaguesFollowing.contains(league);
-  }
-
-  List<T> mapLeagues<T>(T f(League l)) {
-    return _leaguesFollowing.map<T>(f).toList();
+  void start() {
+    this._teamsFollowing.notifyWith(this.notifyListeners);
   }
 }

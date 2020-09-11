@@ -86,7 +86,7 @@ class _TeamViewWidget extends StatelessWidget {
 
           return ListView(
             scrollDirection: Axis.horizontal,
-            children: model.mapTeams<Widget>((team) => IconButton(
+            children: model.teamsFollowing.map<Widget>((team) => IconButton(
                   icon: getTeamLogo(team.logoURL),
                   onPressed: () {
                     // TODO When team is selected from list
@@ -245,14 +245,17 @@ class _FixtureTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4.0),
                     color: Colors.grey[200],
                   ),
-                  child: Text(
-                    '${_fixture.goalsHomeTeam}',
-                    style: TextStyle(
-                      letterSpacing: 0.0,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: _fixture.statusShort == 'TBD' ||
+                          _fixture.statusShort == 'NS'
+                      ? null
+                      : Text(
+                          '${_fixture.goalsHomeTeam}',
+                          style: TextStyle(
+                            letterSpacing: 0.0,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -296,14 +299,17 @@ class _FixtureTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4.0),
                     color: Colors.grey[200],
                   ),
-                  child: Text(
-                    '${_fixture.goalsAwayTeam}',
-                    style: TextStyle(
-                      letterSpacing: 0.0,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: _fixture.statusShort == 'TBD' ||
+                          _fixture.statusShort == 'NS'
+                      ? null
+                      : Text(
+                          '${_fixture.goalsAwayTeam}',
+                          style: TextStyle(
+                            letterSpacing: 0.0,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.0),

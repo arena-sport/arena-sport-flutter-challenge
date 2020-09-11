@@ -53,6 +53,9 @@ class AppBaseState extends State<AppBase> {
   @override
   void initState() {
     super.initState();
+
+    // Start model
+    _homePageModel.start();
   }
 
   @override
@@ -230,7 +233,8 @@ class _SearchButton extends StatelessWidget {
               MaterialPageRoute<HashSet<LeagueExtra>>(
                   builder: (context) =>
                       SearchPage(_homePageModel.leaguesFollowing)),
-            ).then((response) => _homePageModel.setLeagues(response)));
+            ).then(
+                (response) => _homePageModel.leaguesFollowing.set(response)));
   }
 }
 

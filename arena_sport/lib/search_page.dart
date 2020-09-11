@@ -3,13 +3,14 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'models.dart';
 import 'api_models.dart';
 import 'api.dart' as api;
 
 import 'dart:async';
 
 class SearchPage extends StatefulWidget {
-  final HashSet<LeagueExtra> currentlyFollowing;
+  final ModelHashSet<LeagueExtra> currentlyFollowing;
 
   SearchPage(this.currentlyFollowing);
 
