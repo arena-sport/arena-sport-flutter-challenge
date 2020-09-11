@@ -1,8 +1,11 @@
 import 'dart:collection';
 
-import 'api_models.dart';
-
+import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
+
+import 'stats_page.dart';
+import 'api_models.dart';
+import 'home_page.dart';
 
 class CounterModel extends Model {
   int _counter = 0;
@@ -62,6 +65,33 @@ class UserInfoModel extends Model {
 ////////////////////////////////////////////////////
 // Home Page Model
 ////////////////////////////////////////////////////
+
+class HomePageModel extends Model {
+  ModelHashSet<TeamExtra> _teamsFollowing;
+  ModelHashSet<LeagueExtra> _leaguesFollowing;
+
+  HomePageModel()
+      : _teamsFollowing = ModelHashSet<TeamExtra>(HashSet<TeamExtra>()),
+        _leaguesFollowing = ModelHashSet<LeagueExtra>(HashSet<LeagueExtra>());
+
+  factory HomePageModel.fromSave(String filePath) {
+    // TODO implement fetching from save
+    return HomePageModel();
+  }
+
+  factory HomePageModel.fromJson(Map<String, dynamic> json) {
+    // TODO implement
+    throw Exception('Not yet implemented.');
+  }
+
+  // Getters
+  ModelHashSet<TeamExtra> get teamsFollowing => _teamsFollowing;
+  ModelHashSet<LeagueExtra> get leaguesFollowing => _leaguesFollowing;
+
+  void start() {
+    this._teamsFollowing.notifyWith(this.notifyListeners);
+  }
+}
 
 class ModelHashSet<E> {
   HashSet<E> _hashSet;
@@ -147,29 +177,25 @@ class ModelHashSet<E> {
   }
 }
 
-class HomePageModel extends Model {
-  ModelHashSet<TeamExtra> _teamsFollowing;
-  ModelHashSet<LeagueExtra> _leaguesFollowing;
+////////////////////////////////////////////////////
+// Activity Model
+////////////////////////////////////////////////////
 
-  HomePageModel()
-      : _teamsFollowing = ModelHashSet<TeamExtra>(HashSet<TeamExtra>()),
-        _leaguesFollowing = ModelHashSet<LeagueExtra>(HashSet<LeagueExtra>());
+typedef void ChangeMainBody(int index, {HomePage home, StatsPage stats});
 
-  factory HomePageModel.fromSave(String filePath) {
-    // TODO implement fetching from save
-    return HomePageModel();
+class ActivityModel extends Model {
+  static ActivityModel of(BuildContext context) =>
+      ScopedModel.of<ActivityModel>(context);
+
+  ActivityModel({ChangeMainBody changeMainBody}) {
+    _changeMainBody = changeMainBody;
   }
 
-  factory HomePageModel.fromJson(Map<String, dynamic> json) {
-    // TODO implement
-    throw Exception('Not yet implemented.');
-  }
+  ChangeMainBody _changeMainBody;
 
-  // Getters
-  ModelHashSet<TeamExtra> get teamsFollowing => _teamsFollowing;
-  ModelHashSet<LeagueExtra> get leaguesFollowing => _leaguesFollowing;
+  // Gets function.
+  ChangeMainBody get changeMainBody => _changeMainBody;
 
-  void start() {
-    this._teamsFollowing.notifyWith(this.notifyListeners);
-  }
+  // sets function if provided function is non-null. Cannot set to null.
+  set changeMainBody(ChangeMainBody change) => _changeMainBody = change ?? _changeMainBody;
 }

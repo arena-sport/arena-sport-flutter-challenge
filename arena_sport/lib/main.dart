@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:arena_sport/search_page.dart';
+import 'package:arena_sport/stats_page.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -9,10 +10,10 @@ import 'home_page.dart';
 import 'models.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(Arena());
 }
 
-class MyApp extends StatelessWidget {
+class Arena extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -42,13 +43,25 @@ class AppBase extends StatefulWidget {
 }
 
 class AppBaseState extends State<AppBase> {
-  int _currentIndex = 0;
-
   // models
   final UserInfoModel _userInfo =
       UserInfoModel.fromSave(''); // TODO get saved user info from memory
   final HomePageModel _homePageModel =
       HomePageModel.fromSave(''); // TODO also retrieve from memory
+  final ActivityModel _activityModel = ActivityModel();
+
+  // Icons for bottom navigation bar
+  List<IconData> bNavIcons = [
+    Icons.home_outlined,
+    Icons.bar_chart,
+    Icons.ac_unit,
+    Icons.live_tv,
+    Icons.language,
+  ];
+
+  // Params to control scaffold body
+  Widget _appBody;
+  int _bNavIndex;
 
   @override
   void initState() {
@@ -56,115 +69,79 @@ class AppBaseState extends State<AppBase> {
 
     // Start model
     _homePageModel.start();
+    // Finish initializing _activityModel
+    _activityModel.changeMainBody = changeBodyTo;
+
+    // initialize scaffold body
+    _appBody = HomePage(_homePageModel);
+    _bNavIndex = 0;
+  }
+
+  // To change to a different body
+  void changeBodyTo(int index, {HomePage home, StatsPage stats}) {
+    if (index == this._bNavIndex) {
+      return;
+    }
+
+    setState(() {
+      this._bNavIndex = index;
+
+      this._appBody = () {
+        switch (index) {
+          case 0:
+            return home ?? HomePage(_homePageModel);
+          case 1:
+            return stats ?? StatsPage();
+          case 2:
+          case 3:
+          case 4:
+          default:
+            return null;
+        }
+      }();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    /*if (_userInfo.country == null) {
-      _chooseCountry(context, _choseCountry);
-    }*/
-
     return ScopedModel(
-      model: _userInfo,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            widget.title,
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+      model: _activityModel,
+      child: ScopedModel(
+        model: _userInfo,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              widget.title,
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            ),
+            actions: [
+              _LiveSwitch(),
+              _SearchButton(_homePageModel),
+            ],
           ),
-          actions: [
-            _LiveSwitch(),
-            _SearchButton(_homePageModel),
-          ],
-        ),
-        body: (int curr) {
-          switch (curr) {
-            case 0:
-              return HomePage(_homePageModel);
-            case 1:
-              return null;
-            case 2:
-              return null;
-            case 3:
-              return null;
-            case 4:
-              return null;
-          }
-        }(_currentIndex),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: const Icon(
-                  Icons.home_outlined,
-                  color: Colors.grey,
-                  size: 36.0,
-                ),
-                label: 'Home',
-                activeIcon: const Icon(
-                  Icons.home_outlined,
-                  color: Colors.blueAccent,
-                  size: 36.0,
-                )),
-            BottomNavigationBarItem(
-              icon: const Icon(
-                Icons.bar_chart,
-                color: Colors.grey,
-                size: 36.0,
-              ),
-              label: 'Stats',
-              activeIcon: const Icon(
-                Icons.bar_chart,
-                color: Colors.blueAccent,
-                size: 36.0,
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(
-                Icons.ac_unit,
+          body: _appBody,
+          bottomNavigationBar: BottomNavigationBar(
+            items: bNavIcons.map<BottomNavigationBarItem>((iconData) => BottomNavigationBarItem(
+              icon: Icon(
+                iconData,
                 color: Colors.grey,
                 size: 36.0,
               ),
               label: '',
-              activeIcon: const Icon(
-                Icons.ac_unit,
+              activeIcon: Icon(
+                iconData,
                 color: Colors.blueAccent,
                 size: 36.0,
               ),
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(
-                Icons.live_tv,
-                color: Colors.grey,
-                size: 36.0,
-              ), // can be changed for Icons.tv
-              label: '',
-              activeIcon: const Icon(
-                Icons.live_tv,
-                color: Colors.blueAccent,
-                size: 36.0,
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(
-                Icons.language,
-                color: Colors.grey,
-                size: 36.0,
-              ),
-              label: '',
-              activeIcon: const Icon(
-                Icons.language,
-                color: Colors.blueAccent,
-                size: 36.0,
-              ),
-            )
-          ],
-          type: BottomNavigationBarType.shifting,
-          currentIndex: _currentIndex,
-          onTap: (int t) {
-            setState(() {
-              _currentIndex = t;
-            });
-          },
+            )).toList(),
+            type: BottomNavigationBarType.shifting,
+            currentIndex: this._bNavIndex,
+            onTap: (int index) {
+              setState(() {
+                changeBodyTo(index);
+              });
+            },
+          ),
         ),
       ),
     );

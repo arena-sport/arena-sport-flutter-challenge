@@ -1,4 +1,5 @@
 import 'package:arena_sport/api.dart';
+import 'package:arena_sport/stats_page.dart';
 import 'api_models.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -7,20 +8,15 @@ import 'package:scoped_model/scoped_model.dart';
 
 import 'models.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage(this.model, {Key key}) : super(key: key);
-
+class HomePage extends StatelessWidget {
   final HomePageModel model;
 
-  @override
-  State<HomePage> createState() => HomePageState();
-}
+  HomePage(this.model, {Key key}) : super(key: key);
 
-class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return ScopedModel<HomePageModel>(
-      model: widget.model,
+      model: model,
       child: Container(
         color: Colors.grey[200],
         child: Center(
@@ -29,7 +25,7 @@ class HomePageState extends State<HomePage> {
               return ListView(
                 children: [
                   _TeamViewWidget(),
-                  ...widget.model.leaguesFollowing
+                  ...model.leaguesFollowing
                       .map<Widget>((league) =>
                           _UpcomingGamesCard(league, key: UniqueKey()))
                       .toList(),
@@ -43,11 +39,7 @@ class HomePageState extends State<HomePage> {
   }
 }
 
-// DISCLAIMER: This will only show the teams of the first league in the country
-// There is no way yet to select different leagues to follow
-// Therefore only the first league will be presented to the end user
-// This will be changed in the future
-// TODO Change functionality
+// Displays all teams in all of the leagues the user is currently following
 class _TeamViewWidget extends StatelessWidget {
   _TeamViewWidget({Key key}) : super(key: key);
 
@@ -212,115 +204,116 @@ class _FixtureTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Table(
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          columnWidths: <int, TableColumnWidth>{
-            0: const FixedColumnWidth(36.0), // Team Logo
-            1: const FractionColumnWidth(0.5), // Team name
-            2: const FixedColumnWidth(16.0), // Team score
-            3: null, // Time in game or where game is available
-            4: const FixedColumnWidth(
-                24.0), // Bell icon (if game is still going) or nothing
-          },
-          children: [
-            TableRow(
-              children: <Widget>[
-                getTeamLogo(_fixture.homeTeam.logoURL),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 6.0),
-                  child: Text(
-                    _fixture.homeTeam.name,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.0,
-                    ),
+    return GestureDetector(
+      child: Table(
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        columnWidths: <int, TableColumnWidth>{
+          0: const FixedColumnWidth(36.0), // Team Logo
+          1: const FractionColumnWidth(0.5), // Team name
+          2: const FixedColumnWidth(16.0), // Team score
+          3: null, // Time in game or where game is available
+          4: const FixedColumnWidth(
+              24.0), // Bell icon (if game is still going) or nothing
+        },
+        children: [
+          TableRow(
+            children: <Widget>[
+              getTeamLogo(_fixture.homeTeam.logoURL),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 6.0),
+                child: Text(
+                  _fixture.homeTeam.name,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(3.0, 2.0, 2.0, 2.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4.0),
-                    color: Colors.grey[200],
-                  ),
-                  child: _fixture.statusShort == 'TBD' ||
-                          _fixture.statusShort == 'NS'
-                      ? null
-                      : Text(
-                          '${_fixture.goalsHomeTeam}',
-                          style: TextStyle(
-                            letterSpacing: 0.0,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(3.0, 2.0, 2.0, 2.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4.0),
+                  color: Colors.grey[200],
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    '${_fixture.statusShort == 'FT' ? 'Terminado' : _fixture.elapsed}',
-                    style: TextStyle(
-                      color: _fixture.statusShort == 'FT'
-                          ? Colors.green
-                          : Colors.red,
-                    ),
+                child: _fixture.statusShort == 'TBD' ||
+                    _fixture.statusShort == 'NS'
+                    ? null
+                    : Text(
+                  '${_fixture.goalsHomeTeam}',
+                  style: TextStyle(
+                    letterSpacing: 0.0,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                _fixture.statusShort == 'FT'
-                    ? Container()
-                    : IconButton(
-                        // TODO implement button to sign up for notifications for the game
-                        icon: Icon(
-                          Icons.notifications_outlined,
-                          color: Colors.grey[300],
-                        ),
-                        onPressed: () {},
-                      ),
-              ],
-            ),
-            TableRow(
-              children: <Widget>[
-                getTeamLogo(_fixture.awayTeam.logoURL),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 6.0),
-                  child: Text(
-                    _fixture.awayTeam.name,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.0,
-                    ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  '${_fixture.statusShort == 'FT' ? 'Terminado' : _fixture.elapsed}',
+                  style: TextStyle(
+                    color: _fixture.statusShort == 'FT'
+                        ? Colors.green
+                        : Colors.red,
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(3.0, 2.0, 2.0, 2.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4.0),
-                    color: Colors.grey[200],
+              ),
+              _fixture.statusShort == 'FT'
+                  ? Container()
+                  : IconButton(
+                // TODO implement button to sign up for notifications for the game
+                icon: Icon(
+                  Icons.notifications_outlined,
+                  color: Colors.grey[300],
+                ),
+                onPressed: () {},
+              ),
+            ],
+          ),
+          TableRow(
+            children: <Widget>[
+              getTeamLogo(_fixture.awayTeam.logoURL),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 6.0),
+                child: Text(
+                  _fixture.awayTeam.name,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
                   ),
-                  child: _fixture.statusShort == 'TBD' ||
-                          _fixture.statusShort == 'NS'
-                      ? null
-                      : Text(
-                          '${_fixture.goalsAwayTeam}',
-                          style: TextStyle(
-                            letterSpacing: 0.0,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Container(),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(3.0, 2.0, 2.0, 2.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4.0),
+                  color: Colors.grey[200],
                 ),
-                Container(),
-              ],
-            ),
-          ],
-        ),
-      ],
+                child: _fixture.statusShort == 'TBD' ||
+                    _fixture.statusShort == 'NS'
+                    ? null
+                    : Text(
+                  '${_fixture.goalsAwayTeam}',
+                  style: TextStyle(
+                    letterSpacing: 0.0,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: Container(),
+              ),
+              Container(),
+            ],
+          ),
+        ],
+      ),
+      onTap: () {
+        // Change to H2H tab is stats page to show details of both teams in current fixture.
+        ActivityModel.of(context).changeMainBody(1, stats: StatsPage.toH2H(_fixture));
+      },
     );
   }
 }
