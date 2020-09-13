@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class InformationListView extends StatelessWidget {
+class InformationListView extends StatefulWidget {
   const InformationListView({
     Key key,
   }) : super(key: key);
@@ -13,7 +13,12 @@ class InformationListView extends StatelessWidget {
     'Tracker'
   ];
 
-  final indexSelected = 3;
+  @override
+  _InformationListViewState createState() => _InformationListViewState();
+}
+
+class _InformationListViewState extends State<InformationListView> {
+  var indexSelected = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -26,16 +31,22 @@ class InformationListView extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: selectableInformation
+        children: InformationListView.selectableInformation
             .asMap()
             .map((index, labelText) {
               final label = Container(
                 alignment: Alignment.center,
-                child: Text(
-                  labelText,
-                  style: TextStyle(
-                    color: indexSelected == index ? Colors.blue : Colors.black,
-                    fontWeight: FontWeight.w500,
+                child: GestureDetector(
+                  onTap: () => setState(() {
+                    indexSelected = index;
+                  }),
+                  child: Text(
+                    labelText,
+                    style: TextStyle(
+                      color:
+                          indexSelected == index ? Colors.blue : Colors.black,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
                 margin: EdgeInsets.symmetric(horizontal: 8),
