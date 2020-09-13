@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:arena_sport/config.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,7 +9,7 @@ import 'api_models.dart';
 
 const API_FOOTBALL_HEADERS = {
   'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com',
-  'X-RapidAPI-Key': 'c0a29c1cddmsh2ba773d3125f18cp1e152djsnfac76f984e8d',
+  'X-RapidAPI-Key': API_KEY,
 };
 
 ////////////////////////////////////////////////////
