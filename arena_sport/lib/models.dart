@@ -70,9 +70,7 @@ class HomePageModel extends Model {
   ModelHashSet<TeamExtra> _teamsFollowing;
   ModelHashSet<LeagueExtra> _leaguesFollowing;
 
-  HomePageModel()
-      : _teamsFollowing = ModelHashSet<TeamExtra>(HashSet<TeamExtra>()),
-        _leaguesFollowing = ModelHashSet<LeagueExtra>(HashSet<LeagueExtra>());
+  HomePageModel();
 
   factory HomePageModel.fromSave(String filePath) {
     // TODO implement fetching from save
@@ -85,20 +83,88 @@ class HomePageModel extends Model {
   }
 
   // Getters
-  ModelHashSet<TeamExtra> get teamsFollowing => _teamsFollowing;
-  ModelHashSet<LeagueExtra> get leaguesFollowing => _leaguesFollowing;
+  ModelHashSet<TeamExtra> get teamsFollowing =>
+      _teamsFollowing ?? ModelHashSet<TeamExtra>(this.notifyListeners);
+  ModelHashSet<LeagueExtra> get leaguesFollowing =>
+      _leaguesFollowing ?? ModelHashSet<LeagueExtra>(this.notifyListeners);
 
-  void start() {
-    this._teamsFollowing.notifyWith(this.notifyListeners);
+  set teamsFollowing(ModelHashSet<TeamExtra> newTeams) {
+    _teamsFollowing = newTeams;
+    notifyListeners();
   }
+
+  set leaguesFollowing(ModelHashSet<LeagueExtra> newLeagues) {
+    _leaguesFollowing = newLeagues;
+    notifyListeners();
+  }
+}
+
+class ModelMap<K, V> {
+  Map<K, V> _map;
+  void Function() _notifyListeners;
+
+  ModelMap(void notify(), {Map<K, V> map}) {
+    this._map = map ?? Map<K, V>();
+    this._notifyListeners = notify;
+  }
+
+  factory ModelMap.fromSave(String filePath) {
+    // TODO implement
+    throw Exception('Not yet implemented.');
+  }
+
+  factory ModelMap.fromJson(Map<String, dynamic> json) {
+    // TODO implement
+    throw Exception('Not yet implemented.');
+  }
+
+  void notifyWith(void Function() notify) {
+    this._notifyListeners = notify;
+  }
+
+  operator [](Object key) => this._map[key];
+  operator []=(K key, V value) => this._map[key] = value;
+
+  int get length => this._map.length;
+  bool get isEmpty => this._map.isEmpty;
+  Iterable<K> get keys => this._map.keys;
+  Iterable<V> get values => this._map.values;
+
+  void set(Map<K, V> set) {
+    this._map = set;
+
+    this._notifyListeners();
+  }
+
+  void addAll(Map<K, V> other) {
+    this._map.addAll(other);
+
+    this._notifyListeners();
+  }
+
+  V remove(K key) {
+    V value = this._map.remove(key);
+
+    this._notifyListeners();
+
+    return value;
+  }
+
+  bool containsKey(K key) => this._map.containsKey(key);
+
+  bool containsValue(V value) => this._map.containsValue(value);
+
+  Map<K2, V2> map<K2, V2>(MapEntry<K2, V2> f(K key, V value)) =>
+      this._map.map(f);
 }
 
 class ModelHashSet<E> {
   HashSet<E> _hashSet;
   void Function() _notifyListeners;
 
-  ModelHashSet(HashSet<E> s) {
-    this._hashSet = s;
+  ModelHashSet(void notify(), {HashSet<E> set}) {
+    this._hashSet = set ?? HashSet<E>();
+    this._notifyListeners = notify;
   }
 
   factory ModelHashSet.fromSave(String filePath) {
@@ -115,17 +181,11 @@ class ModelHashSet<E> {
     this._notifyListeners = notify;
   }
 
+  bool get isEmpty => this._hashSet.isEmpty;
   // Get size of Set
   int get length => this._hashSet.length;
   // Get first element in set
   E get first => this._hashSet.first;
-
-  // sets the new current HashSet to the provided HashSet
-  void set(HashSet<E> set) {
-    this._hashSet = set;
-
-    this._notifyListeners();
-  }
 
   // Adds league to the set.
   // Returns true if league (or equivalent value) was not yet in the set.
@@ -164,17 +224,14 @@ class ModelHashSet<E> {
   }
 
   // Returns true if team is in the set.
-  bool contains(E item) {
-    bool b = this._hashSet.contains(item);
+  bool contains(E item) => this._hashSet.contains(item);
 
-    this._notifyListeners();
+  Iterable<T> map<T>(T func(E value)) => _hashSet.map(func);
 
-    return b;
-  }
+  bool any(bool test(E element)) => _hashSet.any(test);
 
-  Iterable<T> map<T>(T func(E value)) {
-    return _hashSet.map(func);
-  }
+  E singleWhere(bool test(E element), {E orElse()}) =>
+      _hashSet.singleWhere(test, orElse: orElse);
 }
 
 ////////////////////////////////////////////////////
@@ -197,5 +254,8 @@ class ActivityModel extends Model {
   ChangeMainBody get changeMainBody => _changeMainBody;
 
   // sets function if provided function is non-null. Cannot set to null.
-  set changeMainBody(ChangeMainBody change) => _changeMainBody = change ?? _changeMainBody;
+  set changeMainBody(ChangeMainBody change) {
+    _changeMainBody = change ?? _changeMainBody;
+    notifyListeners();
+  }
 }

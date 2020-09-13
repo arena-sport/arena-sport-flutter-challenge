@@ -67,8 +67,6 @@ class AppBaseState extends State<AppBase> {
   void initState() {
     super.initState();
 
-    // Start model
-    _homePageModel.start();
     // Finish initializing _activityModel
     _activityModel.changeMainBody = changeBodyTo;
 
@@ -112,7 +110,8 @@ class AppBaseState extends State<AppBase> {
           appBar: AppBar(
             title: Text(
               widget.title,
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
             ),
             actions: [
               _LiveSwitch(),
@@ -121,19 +120,22 @@ class AppBaseState extends State<AppBase> {
           ),
           body: _appBody,
           bottomNavigationBar: BottomNavigationBar(
-            items: bNavIcons.map<BottomNavigationBarItem>((iconData) => BottomNavigationBarItem(
-              icon: Icon(
-                iconData,
-                color: Colors.grey,
-                size: 36.0,
-              ),
-              label: '',
-              activeIcon: Icon(
-                iconData,
-                color: Colors.blueAccent,
-                size: 36.0,
-              ),
-            )).toList(),
+            items: bNavIcons
+                .map<BottomNavigationBarItem>(
+                    (iconData) => BottomNavigationBarItem(
+                          icon: Icon(
+                            iconData,
+                            color: Colors.grey,
+                            size: 36.0,
+                          ),
+                          label: '',
+                          activeIcon: Icon(
+                            iconData,
+                            color: Colors.blueAccent,
+                            size: 36.0,
+                          ),
+                        ))
+                .toList(),
             type: BottomNavigationBarType.shifting,
             currentIndex: this._bNavIndex,
             onTap: (int index) {
@@ -207,12 +209,10 @@ class _SearchButton extends StatelessWidget {
         height: 24.0,
         onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute<HashSet<LeagueExtra>>(
+              MaterialPageRoute<ModelHashSet<LeagueExtra>>(
                   builder: (context) =>
                       SearchPage(_homePageModel.leaguesFollowing)),
-            ).then(
-                (response) => _homePageModel.leaguesFollowing.set(response)));
+            ).then((response) => _homePageModel.leaguesFollowing = response));
   }
 }
-
 // export PATH="$PATH:/Users/projects/flutter/bin"

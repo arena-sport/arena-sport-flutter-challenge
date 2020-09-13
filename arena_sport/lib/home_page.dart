@@ -52,6 +52,10 @@ class _TeamViewWidget extends StatelessWidget {
       height: 54.0,
       child: ScopedModelDescendant<HomePageModel>(
         builder: (BuildContext context, Widget child, HomePageModel model) {
+          if (model.teamsFollowing.isEmpty && model.leaguesFollowing.isEmpty) {
+            return Container();
+          }
+
           if (model.teamsFollowing.length == 0) {
             return FutureBuilder(
                 future: getTeamsInLeague(model.leaguesFollowing.first.leagueID),
@@ -115,6 +119,7 @@ class _UpcomingGamesCardState extends State<_UpcomingGamesCard> {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+      borderOnForeground: false,
       margin: EdgeInsets.all(12.0),
       child: Padding(
         padding: EdgeInsets.all(16.0),
@@ -236,16 +241,16 @@ class _FixtureTile extends StatelessWidget {
                   color: Colors.grey[200],
                 ),
                 child: _fixture.statusShort == 'TBD' ||
-                    _fixture.statusShort == 'NS'
+                        _fixture.statusShort == 'NS'
                     ? null
                     : Text(
-                  '${_fixture.goalsHomeTeam}',
-                  style: TextStyle(
-                    letterSpacing: 0.0,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                        '${_fixture.goalsHomeTeam}',
+                        style: TextStyle(
+                          letterSpacing: 0.0,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -261,13 +266,13 @@ class _FixtureTile extends StatelessWidget {
               _fixture.statusShort == 'FT'
                   ? Container()
                   : IconButton(
-                // TODO implement button to sign up for notifications for the game
-                icon: Icon(
-                  Icons.notifications_outlined,
-                  color: Colors.grey[300],
-                ),
-                onPressed: () {},
-              ),
+                      // TODO implement button to sign up for notifications for the game
+                      icon: Icon(
+                        Icons.notifications_outlined,
+                        color: Colors.grey[300],
+                      ),
+                      onPressed: () {},
+                    ),
             ],
           ),
           TableRow(
@@ -290,16 +295,16 @@ class _FixtureTile extends StatelessWidget {
                   color: Colors.grey[200],
                 ),
                 child: _fixture.statusShort == 'TBD' ||
-                    _fixture.statusShort == 'NS'
+                        _fixture.statusShort == 'NS'
                     ? null
                     : Text(
-                  '${_fixture.goalsAwayTeam}',
-                  style: TextStyle(
-                    letterSpacing: 0.0,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                        '${_fixture.goalsAwayTeam}',
+                        style: TextStyle(
+                          letterSpacing: 0.0,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -312,7 +317,8 @@ class _FixtureTile extends StatelessWidget {
       ),
       onTap: () {
         // Change to H2H tab is stats page to show details of both teams in current fixture.
-        ActivityModel.of(context).changeMainBody(1, stats: StatsPage.toH2H(_fixture));
+        ActivityModel.of(context)
+            .changeMainBody(1, stats: StatsPage.toH2H(_fixture));
       },
     );
   }

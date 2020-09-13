@@ -348,3 +348,96 @@ class FixtureResponse {
     );
   }
 }
+
+class StandingsResponse {
+  final List<Standings> standings;
+
+  StandingsResponse({
+    this.standings,
+  });
+
+  factory StandingsResponse.fromJson(Map<String, dynamic> json) =>
+      StandingsResponse(
+          standings: json['api']['standings']
+              .first
+              .map<Standings>((e) => Standings.fromJson(e))
+              .toList());
+}
+
+class Standings {
+  final int rank;
+  final int teamID;
+  final String teamName;
+  final String logoURL;
+  final String group;
+  final String forme;
+  final String status;
+  final String description;
+  final TeamStats allStats;
+  final TeamStats homeStats;
+  final TeamStats awayStats;
+  final int goalsDiff;
+  final int points;
+  final String lastUpdate;
+
+  Standings({
+    this.rank,
+    this.teamID,
+    this.teamName,
+    this.logoURL,
+    this.group,
+    this.forme,
+    this.status,
+    this.description,
+    this.allStats,
+    this.homeStats,
+    this.awayStats,
+    this.goalsDiff,
+    this.points,
+    this.lastUpdate,
+  });
+
+  factory Standings.fromJson(Map<String, dynamic> json) => Standings(
+        rank: json['rank'] as int,
+        teamID: json['team_id'] as int,
+        teamName: json['teamName'] as String,
+        logoURL: json['logo'] as String,
+        group: json['group'] as String,
+        forme: json['forme'] as String,
+        status: json['status'] as String,
+        description: json['description'] as String,
+        allStats: TeamStats.fromJson(json['all']),
+        homeStats: TeamStats.fromJson(json['home']),
+        awayStats: TeamStats.fromJson(json['away']),
+        goalsDiff: json['goalsDiff'] as int,
+        points: json['points'] as int,
+        lastUpdate: json['lastUpdate'] as String,
+      );
+}
+
+class TeamStats {
+  final int matchsPlayed;
+  final int wins;
+  final int draws;
+  final int loses;
+  final int goalsFor;
+  final int goalsAgainst;
+
+  TeamStats({
+    this.matchsPlayed,
+    this.wins,
+    this.draws,
+    this.loses,
+    this.goalsFor,
+    this.goalsAgainst,
+  });
+
+  factory TeamStats.fromJson(Map<String, dynamic> json) => TeamStats(
+        matchsPlayed: json['matchsPlayed'] as int,
+        wins: json['win'] as int,
+        draws: json['draw'] as int,
+        loses: json['lose'] as int,
+        goalsFor: json['goalsFor'] as int,
+        goalsAgainst: json['goalsAgainst'] as int,
+      );
+}

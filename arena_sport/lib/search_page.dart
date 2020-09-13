@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -22,14 +20,14 @@ class _SearchPageState extends State<SearchPage> {
   TextEditingController _searchController;
   FocusNode _searchFocusNode;
 
-  HashSet<LeagueExtra> following;
+  ModelHashSet<LeagueExtra> following;
   Future<List<LeagueExtra>> _leagues;
 
   @override
   void initState() {
     super.initState();
 
-    following = widget.currentlyFollowing ?? HashSet<League>();
+    following = widget.currentlyFollowing;
 
     _searchController = TextEditingController();
     _searchFocusNode = FocusNode();
