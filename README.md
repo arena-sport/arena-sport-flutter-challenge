@@ -1,3 +1,14 @@
+# How to Install
+1. Clone the repository, and run `flutter pub get` within the cloned directory in cmd.
+2. Open the server folder, and run `npm install` within the directory in cmd.
+3. In the same server folder, run `npm start` in cmd. This starts the NodeJS GraphQL middle layer.
+4. Open a new terminal, and run the `ipconfig` command. Copy the IPv4 address (this is local to your LAN network).
+5. Within the cloned Arena directory, navigate to `Arena/lib/client.dart`. Here, edit the URI of the HttpLink from `http://10.0.0.213:4000/` to `http://{YOUR URI FROM STEP 4}:4000/`. (**This is extremely important because android emulator does not understand the meaning of localhost.**)
+6. Finally, navigate to the `lib/` folder and type `flutter run`. The app should be working.
+
+
+If you have any questions about this process, please contact Mihir Thanekar at `mihirthanekar@gmail.com`.
+
 # Arena Sport 
 ![license](https://img.shields.io/badge/license-MIT-green?style=flat-square)  
 Arena Sport open-source Flutter challenge.  
