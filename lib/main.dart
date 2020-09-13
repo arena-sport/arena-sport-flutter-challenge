@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'client.dart';
+import 'graph_client.dart';
 
 import 'package:arena/providers/tab-provider.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -13,7 +13,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     GraphQLProvider(
-      client: Config.initializeClient(),
+      client: GraphClient.initializeClient(),
       child: MaterialApp(
         title: 'Arena',
         debugShowCheckedModeBanner: false,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import '../graph_client.dart';
 
 import 'package:arena/views/home_screen/noticias_view/noticias.dart';
 import 'package:arena/views/home_screen/partidos_view/partidos.dart';
@@ -8,40 +9,9 @@ import 'package:arena/views/home_screen/teams_list_view.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final queryString = '''
-    query HomeScreenData {
-      teams {
-        name
-        logo
-      }
-
-      games {
-        event_date
-        homeTeam {
-        team_id
-        name
-        logo
-      }
-      awayTeam {
-        team_id
-        name
-        logo
-      }
-      goalsHomeTeam
-      goalsAwayTeam
-      }
-
-      notices {
-        title
-        urlToImage
-        publishedAt
-      }
-    }  
-    ''';
-
     return Query(
       options: QueryOptions(
-        documentNode: gql(queryString),
+        documentNode: gql(GraphClient.homeScreenQuery),
       ),
       builder: (result, {fetchMore, refetch}) {
         if (result.hasException) {
