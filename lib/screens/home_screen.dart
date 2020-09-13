@@ -9,10 +9,26 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final queryString = '''
-    query Teams {
+    query HomeScreenData {
       teams {
-      name
-      logo
+        name
+        logo
+      }
+
+      games {
+        event_date
+        homeTeam {
+        team_id
+        name
+        logo
+      }
+      awayTeam {
+        team_id
+        name
+        logo
+      }
+      goalsHomeTeam
+      goalsAwayTeam
       }
     }  
     ''';
@@ -30,17 +46,18 @@ class HomeScreen extends StatelessWidget {
           print('loading!');
           return Container();
         }
-        print(result.data);
+        print(result.data['games']);
         return SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
               SizedBox(height: 8),
               TeamsListView(teams: result.data['teams']),
-              Partidos(),
+              Partidos(
+                games: result.data['games'],
+              ),
               Noticias(),
               SizedBox(height: 8),
-              Partidos(),
             ],
           ),
         );

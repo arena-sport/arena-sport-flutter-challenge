@@ -3,6 +3,9 @@ import 'package:arena/widgets/styled_card.dart';
 import './partido.dart';
 
 class Partidos extends StatelessWidget {
+  Partidos({this.games});
+  final List<dynamic> games;
+
   @override
   Widget build(BuildContext context) {
     return StyledCard(
@@ -28,6 +31,7 @@ class Partidos extends StatelessWidget {
                 bool shouldDisplayNotification = index == 0;
                 return Partido(
                   shouldDisplayNotification: shouldDisplayNotification,
+                  game: games != null ? games[index] : [],
                 );
               },
               itemCount: 3,

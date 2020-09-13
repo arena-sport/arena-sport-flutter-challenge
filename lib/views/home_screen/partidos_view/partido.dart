@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class Partido extends StatelessWidget {
   final bool shouldDisplayNotification;
+  final game;
 
-  const Partido({this.shouldDisplayNotification});
+  const Partido({this.shouldDisplayNotification, this.game});
 
   Icon get teamIcon {
     return Icon(Icons.tablet_mac);
@@ -30,35 +31,67 @@ class Partido extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return Container();
     return Column(
       children: [
-        Row(
-          children: [
-            teamIcon,
-            SizedBox(width: 8),
-            Text('Barcelona'),
-            Expanded(child: Container()),
-            score,
-            SizedBox(width: 8),
-            Text('Direct TV'),
-            Expanded(child: Container()),
-            shouldDisplayNotification ? ringer : SizedBox(width: ringer.size),
-          ],
+        TeamRow(
+          game: game,
+          score: score,
+          ringer: ringer,
+          teamString: 'homeTeam',
+          shouldDisplayNotification: shouldDisplayNotification,
         ),
         SizedBox(height: 8),
-        Row(
-          children: [
-            teamIcon,
-            SizedBox(width: 8),
-            Text('Barcelona'),
-            Expanded(child: Container()),
-            score,
-            SizedBox(width: 8),
-            Text('Direct TV'),
-            Expanded(child: Container()),
-            SizedBox(width: ringer.size),
-          ],
+        TeamRow(
+          game: game,
+          score: score,
+          ringer: ringer,
+          teamString: 'awayTeam',
+          shouldDisplayNotification: shouldDisplayNotification,
         ),
+      ],
+    );
+  }
+}
+
+class TeamRow extends StatelessWidget {
+  const TeamRow({
+    Key key,
+    @required this.game,
+    @required this.score,
+    @required this.ringer,
+    @required this.teamString,
+    @required this.shouldDisplayNotification,
+  }) : super(key: key);
+
+  final game;
+  final Widget score;
+  final Icon ringer;
+  final String teamString;
+  final bool shouldDisplayNotification;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        if (game != null)
+          Image.network(
+            game[teamString]['logo'],
+            height: 20,
+          ),
+        SizedBox(width: 8),
+        Container(
+          child: Text(game != null ? game[teamString]['name'] : 'Barcelona'),
+          width: 100,
+        ),
+        Expanded(child: Container()),
+        score,
+        SizedBox(width: 8),
+        Text('Direct TV'),
+        Expanded(child: Container()),
+        shouldDisplayNotification && teamString == 'homeTeam'
+            ? ringer
+            : SizedBox(width: ringer.size),
       ],
     );
   }

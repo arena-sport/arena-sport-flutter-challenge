@@ -11,13 +11,6 @@ import 'widgets/global/styled_bottom_navigation_bar.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  final gq = """query Teams {
-  teams {
-    name
-    logo
-  }
-}""";
-
   runApp(
     GraphQLProvider(
       client: Config.initializeClient(),
