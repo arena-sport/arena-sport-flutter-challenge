@@ -21,32 +21,18 @@ void main() {
   runApp(
     GraphQLProvider(
       client: Config.initializeClient(),
-      child: Query(
-        builder: (result, {fetchMore, refetch}) {
-          print(result.loading);
-          print(result.exception.toString());
-          print(result.data);
-          print('end build');
-          return MaterialApp(
-            home: Container(
-              color: Colors.red,
-            ),
-          );
-        },
-        options: QueryOptions(documentNode: gql(gq)),
-        // child: MaterialApp(
-        //   title: 'Arena',
-        //   debugShowCheckedModeBanner: false,
-        //   home: ChangeNotifierProvider<TabProvider>(
-        //     create: (context) => TabProvider(),
-        //     builder: (context, child) => Scaffold(
-        //       backgroundColor: Colors.grey.shade200,
-        //       appBar: StyledAppBar(),
-        //       body: context.watch<TabProvider>().screen,
-        //       bottomNavigationBar: StyledBottomNavigationBar(),
-        //     ),
-        //   ),
-        // ),
+      child: MaterialApp(
+        title: 'Arena',
+        debugShowCheckedModeBanner: false,
+        home: ChangeNotifierProvider<TabProvider>(
+          create: (context) => TabProvider(),
+          builder: (context, child) => Scaffold(
+            backgroundColor: Colors.grey.shade200,
+            appBar: StyledAppBar(),
+            body: context.watch<TabProvider>().screen,
+            bottomNavigationBar: StyledBottomNavigationBar(),
+          ),
+        ),
       ),
     ),
   );

@@ -20,7 +20,6 @@ class HomeScreen extends StatelessWidget {
     return Query(
       options: QueryOptions(
         documentNode: gql(queryString),
-        pollInterval: 1000000000000,
       ),
       builder: (result, {fetchMore, refetch}) {
         if (result.hasException) {
@@ -37,7 +36,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 8),
-              TeamsListView(),
+              TeamsListView(teams: result.data['teams']),
               Partidos(),
               Noticias(),
               SizedBox(height: 8),

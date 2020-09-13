@@ -2,23 +2,11 @@ import 'package:flutter/material.dart';
 
 class TeamsListView extends StatelessWidget {
   const TeamsListView({
+    this.teams,
     Key key,
   }) : super(key: key);
 
-  static const teamLogos = [
-    'https://www.jetpunk.com/img/user-photo-library/24/245b108023-450.png',
-    'https://www.jetpunk.com/img/user-photo-library/24/245b108023-450.png',
-    'https://www.jetpunk.com/img/user-photo-library/24/245b108023-450.png',
-    'https://www.jetpunk.com/img/user-photo-library/24/245b108023-450.png',
-    'https://www.jetpunk.com/img/user-photo-library/24/245b108023-450.png',
-    'https://www.jetpunk.com/img/user-photo-library/24/245b108023-450.png',
-    'https://www.jetpunk.com/img/user-photo-library/24/245b108023-450.png',
-    'https://www.jetpunk.com/img/user-photo-library/24/245b108023-450.png',
-    'https://www.jetpunk.com/img/user-photo-library/24/245b108023-450.png',
-    'https://www.jetpunk.com/img/user-photo-library/24/245b108023-450.png',
-    'https://www.jetpunk.com/img/user-photo-library/24/245b108023-450.png',
-    'https://www.jetpunk.com/img/user-photo-library/24/245b108023-450.png',
-  ];
+  final List<dynamic> teams;
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +21,11 @@ class TeamsListView extends StatelessWidget {
         itemBuilder: (context, index) {
           return Container(
             padding: EdgeInsets.symmetric(vertical: 10),
-            child: Image.network(teamLogos[index]),
+            child: Image.network(teams[index]['logo']),
             margin: EdgeInsets.symmetric(horizontal: 8),
           );
         },
-        itemCount: teamLogos.length,
+        itemCount: teams.length,
       ),
     );
   }
