@@ -4,11 +4,17 @@ class Noticia extends StatelessWidget {
   const Noticia({
     Key key,
     @required this.leading,
-    this.mainImage,
+    @required this.displayImage,
+    this.article,
   }) : super(key: key);
 
   final bool leading;
-  final String mainImage;
+  final bool displayImage;
+  String get mainImage {
+    return article != null ? article['urlToImage'] : '';
+  }
+
+  final dynamic article;
 
   @override
   Widget build(BuildContext context) {
@@ -31,19 +37,23 @@ class Noticia extends StatelessWidget {
                   style: TextStyle(color: Colors.grey),
                 ),
           title: Text(
-            'Pirlo confirmó que no contará con Gonzalo Higuaín en la Juventus',
+            article != null
+                ? article['title']
+                : 'Pirlo confirmó que no contará con Gonzalo Higuaín en la Juventus',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         if (mainImage != null)
           Container(
             padding: EdgeInsets.zero,
-            child: Image.network(
-              mainImage,
-              width: double.infinity,
-              height: 200,
-              fit: BoxFit.fitWidth,
-            ),
+            child: displayImage
+                ? Image.network(
+                    mainImage,
+                    width: double.infinity,
+                    height: 200,
+                    fit: BoxFit.fitWidth,
+                  )
+                : null,
           ),
       ],
     );

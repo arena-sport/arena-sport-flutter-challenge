@@ -5,8 +5,10 @@ import './noticia.dart';
 class Noticias extends StatelessWidget {
   const Noticias({
     Key key,
+    this.news,
   }) : super(key: key);
 
+  final news;
   final leading = false;
 
   @override
@@ -15,13 +17,18 @@ class Noticias extends StatelessWidget {
       title: 'Noticias',
       child: ListView.separated(
         itemBuilder: (context, index) {
-          if (index == 2)
+          if ((index + 1) % 3 == 0 && index != 0) {
             return Noticia(
               leading: leading,
-              mainImage:
-                  'https://i.pinimg.com/236x/59/77/f2/5977f28d3e23f3a6268cfb3e45325c93--xabi-alonso-vintage-football.jpg',
+              displayImage: true,
+              article: news[index],
             );
-          return Noticia(leading: leading);
+          }
+          return Noticia(
+            leading: leading,
+            article: news[index],
+            displayImage: false,
+          );
         },
         itemCount: 8,
         shrinkWrap: true,

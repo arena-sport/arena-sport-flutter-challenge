@@ -30,6 +30,12 @@ class HomeScreen extends StatelessWidget {
       goalsHomeTeam
       goalsAwayTeam
       }
+
+      notices {
+        title
+        urlToImage
+        publishedAt
+      }
     }  
     ''';
 
@@ -56,7 +62,9 @@ class HomeScreen extends StatelessWidget {
               Partidos(
                 games: result.data['games'],
               ),
-              Noticias(),
+              Noticias(
+                news: result.data['notices'],
+              ),
               SizedBox(height: 8),
             ],
           ),
