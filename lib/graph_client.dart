@@ -59,6 +59,7 @@ class GraphClient {
 		draw
 		lose
 		}
+    logo
     
     # Section 2: Previous Games
     latest_games {

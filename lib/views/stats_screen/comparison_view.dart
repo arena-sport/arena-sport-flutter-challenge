@@ -1,6 +1,32 @@
 import 'package:flutter/material.dart';
 
 class ComparisonView extends StatelessWidget {
+  final List<dynamic> comparison;
+  ComparisonView({this.comparison});
+
+  Widget _teamLogo(int which) {
+    return Column(
+      children: [
+        Container(
+          height: 50,
+          width: 50,
+          child: Image.network(comparison[which]['logo']),
+        ),
+        SizedBox(height: 8),
+      ],
+    );
+  }
+
+  Widget _teamLogoColumn(int which) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        _teamLogo(which),
+        SizedBox(height: 8),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -11,17 +37,7 @@ class ComparisonView extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    color: Colors.green,
-                    height: 50,
-                    width: 50,
-                  ),
-                  SizedBox(height: 8),
-                ],
-              ),
+              _teamLogoColumn(0),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -36,7 +52,10 @@ class ComparisonView extends StatelessWidget {
                     width: 'Position in League'.length * 8.0,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [Text('3'), Text('7')],
+                      children: [
+                        Text('${comparison[0]['rank']}'),
+                        Text('${comparison[1]['rank']}')
+                      ],
                     ),
                   ),
                   Text(
@@ -49,17 +68,7 @@ class ComparisonView extends StatelessWidget {
                   ),
                 ],
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    color: Colors.red,
-                    height: 50,
-                    width: 50,
-                  ),
-                  SizedBox(height: 8),
-                ],
-              ),
+              _teamLogoColumn(1),
             ],
           ),
         ),
