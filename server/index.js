@@ -79,6 +79,7 @@ const resolvers = {
     Query: {
         /** Gets all the teams in a particular league. */
         teams: (_) => __awaiter(void 0, void 0, void 0, function* () {
+            console.log('teams requested');
             const league_id = 2;
             const response = yield fetch(`https://api-football-v1.p.rapidapi.com/v2/teams/league/${league_id}`, rapidapi);
             const parsed = yield response.json();
