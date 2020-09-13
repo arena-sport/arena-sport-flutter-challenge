@@ -117,6 +117,7 @@ const resolvers = {
             const parsed = await response.json();
 
             // Filter to just the 2 teams requested
+            if(parsed.api.standings == null) return null;
             const teamsToCompare = parsed.api.standings[0].filter((element, index, array) => { 
                 return teamNames.includes(element.teamName);
             });

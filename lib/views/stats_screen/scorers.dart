@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 class Scorers extends StatelessWidget {
   const Scorers({
     Key key,
+    this.homeGoalie,
+    this.oppGoalie,
   }) : super(key: key);
+
+  final homeGoalie;
+  final oppGoalie;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 150,
       child: Column(
         children: [
           Text(
@@ -18,8 +22,8 @@ class Scorers extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _playerInfo(),
-              _playerInfo(),
+              _playerInfo(true),
+              _playerInfo(false),
             ],
           )
         ],
@@ -27,19 +31,23 @@ class Scorers extends StatelessWidget {
     );
   }
 
-  Widget _playerInfo() {
+  Widget _playerInfo(bool isHomeTeam) {
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Image.asset(
-            'assets/images/player_face.jpg',
-            width: 50,
+          Image.network(
+            isHomeTeam
+                ? '${homeGoalie['urlToImage']}'
+                : '${oppGoalie['urlToImage']}',
+            width: 100,
           ),
           SizedBox(height: 8),
-          Text('Player Name'),
+          Text(isHomeTeam
+              ? '${homeGoalie['player_name']}'
+              : '${oppGoalie['player_name']}'),
           SizedBox(height: 8),
-          Text('11'),
+          // Text('11'),
           SizedBox(height: 16),
         ],
       ),

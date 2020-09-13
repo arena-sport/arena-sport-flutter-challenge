@@ -10,7 +10,9 @@ class ComparisonView extends StatelessWidget {
         Container(
           height: 50,
           width: 50,
-          child: Image.network(comparison[which]['logo']),
+          child: comparison != null
+              ? Image.network(comparison[which]['logo'])
+              : null,
         ),
         SizedBox(height: 8),
       ],
@@ -52,10 +54,12 @@ class ComparisonView extends StatelessWidget {
                     width: 'Position in League'.length * 8.0,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('${comparison[0]['rank']}'),
-                        Text('${comparison[1]['rank']}')
-                      ],
+                      children: comparison != null
+                          ? [
+                              Text('${comparison[0]['rank']}'),
+                              Text('${comparison[1]['rank']}')
+                            ]
+                          : null,
                     ),
                   ),
                   Text(

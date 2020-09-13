@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 class PreviousGame extends StatelessWidget {
   const PreviousGame({
     Key key,
+    this.game,
   }) : super(key: key);
+
+  final game;
 
   Text get _flagText {
     return Text(
@@ -30,9 +33,13 @@ class PreviousGame extends StatelessWidget {
   }
 
   Widget get _label {
-    return Text(
-      'vs Team Name 0:0',
-      style: TextStyle(color: Colors.grey),
+    return Expanded(
+      child: Text(
+        game != null
+            ? 'vs ${game['homeTeam']['name']} ${game['score']}'
+            : ' vs Team Name 0-0',
+        style: TextStyle(color: Colors.grey),
+      ),
     );
   }
 

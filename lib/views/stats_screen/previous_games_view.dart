@@ -5,7 +5,12 @@ import 'package:arena/widgets/previous_game.dart';
 class PreviousGamesView extends StatelessWidget {
   const PreviousGamesView({
     Key key,
+    this.homeTeamGames,
+    this.oppTeamGames,
   }) : super(key: key);
+
+  final List<dynamic> homeTeamGames;
+  final List<dynamic> oppTeamGames;
 
   @override
   Widget build(BuildContext context) {
@@ -21,24 +26,16 @@ class PreviousGamesView extends StatelessWidget {
             children: [
               Expanded(
                 child: Column(
-                  children: [
-                    PreviousGame(),
-                    PreviousGame(),
-                    PreviousGame(),
-                    PreviousGame(),
-                    PreviousGame(),
-                  ],
+                  children: homeTeamGames
+                      .map((game) => PreviousGame(game: game))
+                      .toList(),
                 ),
               ),
               Expanded(
                 child: Column(
-                  children: [
-                    PreviousGame(),
-                    PreviousGame(),
-                    PreviousGame(),
-                    PreviousGame(),
-                    PreviousGame(),
-                  ],
+                  children: oppTeamGames
+                      .map((game) => PreviousGame(game: game))
+                      .toList(),
                 ),
               ),
             ],

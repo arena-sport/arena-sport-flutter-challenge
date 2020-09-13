@@ -10,17 +10,25 @@ import 'package:arena/views/stats_screen/goal_averages.dart';
 import 'package:arena/views/stats_screen/scorers.dart';
 
 class StatsScreen extends StatelessWidget {
-  Widget get _extraInfo {
+  Widget _extraInfo(comparison) {
     return Container(
       color: Colors.white,
       padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
       child: Column(
         children: [
-          PreviousGamesView(),
+          PreviousGamesView(
+            homeTeamGames:
+                comparison != null ? comparison[0]['latest_games'] : [],
+            oppTeamGames:
+                comparison != null ? comparison[1]['latest_games'] : [],
+          ),
           Divider(thickness: 2.0),
           GoalAverages(),
           Divider(thickness: 2.0),
-          Scorers(),
+          Scorers(
+            homeGoalie: comparison[0]['goalie'],
+            oppGoalie: comparison[1]['goalie'],
+          ),
         ],
       ),
     );
@@ -36,8 +44,9 @@ class StatsScreen extends StatelessWidget {
           child: Column(
             children: [
               InformationListView(),
-              ComparisonView(comparison: result.data['compareTeams']),
-              _extraInfo,
+              if (result.data != null)
+                ComparisonView(comparison: result.data['compareTeams']),
+              if (result.data != null) _extraInfo(result?.data['compareTeams']),
               SizedBox(height: 16),
             ],
           ),
