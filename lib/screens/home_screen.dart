@@ -52,7 +52,6 @@ class HomeScreen extends StatelessWidget {
           print('loading!');
           return Container();
         }
-        print(result.data['games']);
         return SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(

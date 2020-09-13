@@ -6,21 +6,6 @@ class Partido extends StatelessWidget {
 
   const Partido({this.shouldDisplayNotification, this.game});
 
-  Icon get teamIcon {
-    return Icon(Icons.tablet_mac);
-  }
-
-  Widget get score {
-    return Container(
-      padding: EdgeInsets.all(4),
-      color: Colors.grey[300],
-      child: Text(
-        '2',
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
   Icon get ringer {
     return Icon(
       Icons.notifications_none,
@@ -35,7 +20,6 @@ class Partido extends StatelessWidget {
       children: [
         TeamRow(
           game: game,
-          score: score,
           ringer: ringer,
           teamString: 'homeTeam',
           shouldDisplayNotification: shouldDisplayNotification,
@@ -43,7 +27,6 @@ class Partido extends StatelessWidget {
         SizedBox(height: 8),
         TeamRow(
           game: game,
-          score: score,
           ringer: ringer,
           teamString: 'awayTeam',
           shouldDisplayNotification: shouldDisplayNotification,
@@ -57,17 +40,29 @@ class TeamRow extends StatelessWidget {
   const TeamRow({
     Key key,
     @required this.game,
-    @required this.score,
     @required this.ringer,
     @required this.teamString,
     @required this.shouldDisplayNotification,
   }) : super(key: key);
 
   final game;
-  final Widget score;
   final Icon ringer;
   final String teamString;
   final bool shouldDisplayNotification;
+  bool get isHomeTeam {
+    return teamString == 'homeTeam';
+  }
+
+  Widget score() {
+    return Container(
+      padding: EdgeInsets.all(4),
+      color: Colors.grey[300],
+      child: Text(
+        isHomeTeam ? "${game['goalsHomeTeam']}" : "${game['goalsAwayTeam']}",
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +79,7 @@ class TeamRow extends StatelessWidget {
           width: 100,
         ),
         Expanded(child: Container()),
-        score,
+        if (game != null) score(),
         SizedBox(width: 8),
         Text('Direct TV'),
         Expanded(child: Container()),
